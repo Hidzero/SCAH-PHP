@@ -120,4 +120,17 @@
             </div>
         </div>
     </div>
+
+    <!-- Scripts para alternar entre visualização e edição -->
+    <script>
+        function showEditForm(id) {
+            document.getElementById('view-row-' + id).style.display = 'none';
+            document.getElementById('edit-row-' + id).style.display = 'table-row';
+        }
+
+        function cancelEdit(id) {
+            document.getElementById('edit-row-' + id).style.display = 'none';
+            document.getElementById('view-row-' + id).style.display = 'table-row';
+        }
+    </script>
 </x-app-layout>

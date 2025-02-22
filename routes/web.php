@@ -25,6 +25,13 @@ use App\Http\Controllers\EquipamentoController;
 
 Route::middleware(['auth', 'verified'])->group(function () {
 
+    // Como bloquear rotas a partir da role de usuario que esta sendo pesquisada na model
+    
+    // Route::get('/admin', function () {
+    //     return "Painel do Administrador";
+    // })->middleware('auth')->where(fn ($request) => auth()->user()->isAdmin());
+    
+
     Route::get('/', function () {
         return view('dashboard');
     })->middleware(['auth', 'verified'])->name('dashboard');

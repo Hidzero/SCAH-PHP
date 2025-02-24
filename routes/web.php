@@ -56,6 +56,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('visualizar', [EstoqueController::class, 'visualizar'])->name('visualizar');
         Route::get('retirar', [EstoqueController::class, 'retirar'])->name('retirar');
         Route::get('devolucao', [EstoqueController::class, 'devolucao'])->name('devolucao');
+        Route::post('retirar/store', [EstoqueController::class, 'store'])->name('store');
     });
 
     // Rotas de Manutenção

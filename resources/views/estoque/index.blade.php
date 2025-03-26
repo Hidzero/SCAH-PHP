@@ -35,10 +35,8 @@
                                 <table class="table table-bordered table-striped">
                                     <thead>
                                         <tr>
-                                            <th>ID</th>
                                             <th>Nome</th>
-                                            <th>Quantidade</th>
-                                            <th>Categoria</th>
+                                            <th>Numero de Serie</th>
                                             <th>Ações</th>
                                         </tr>
                                     </thead>
@@ -46,12 +44,10 @@
                                         @if(isset($estoque) && count($estoque))
                                             @foreach($estoque as $item)
                                                 <tr>
-                                                    <td>{{ $item->id }}</td>
                                                     <td>{{ $item->nome }}</td>
-                                                    <td>{{ $item->quantidade }}</td>
-                                                    <td>{{ $item->categoria }}</td>
+                                                    <td>{{ $item->numero_serie }}</td>
                                                     <td>
-                                                        <a href="#" class="btn btn-primary btn-sm">Detalhes</a>
+                                                        <a href="{{ route('estoque.retirar') }}" class="btn btn-primary btn-sm">Retirar Ferramenta</a>
                                                     </td>
                                                 </tr>
                                             @endforeach
@@ -71,22 +67,24 @@
                                 <table class="table table-bordered table-striped">
                                     <thead>
                                         <tr>
-                                            <th>ID</th>
                                             <th>Item</th>
-                                            <th>Quantidade</th>
                                             <th>Retirado por</th>
                                             <th>Data</th>
+                                            <th>Ações</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @if(isset($retiradas) && count($retiradas))
                                             @foreach($retiradas as $retirada)
+                                            {{-- @dd($retirada->user) --}}
                                                 <tr>
-                                                    <td>{{ $retirada->id }}</td>
-                                                    <td>{{ $retirada->nome }}</td>
-                                                    <td>{{ $retirada->quantidade }}</td>
-                                                    <td>{{ $retirada->name }}</td>
+                                                    <td>{{ $retirada->ferramenta->nome }}</td>
+                                                    <td>{{ $retirada->user->name }}</td>
                                                     <td>{{ \Carbon\Carbon::parse($retirada->data_retirada)->format('d/m/Y H:i') }}</td>
+                                                    <td>
+                                                        <a href="#" class="btn btn-primary btn-sm">Entregar Ferramenta</a>
+                                                        <a href="#" class="btn btn-danger btn-sm">Enviar para Manutenção</a>
+                                                    </td>
                                                 </tr>
                                             @endforeach
                                         @else
@@ -105,7 +103,6 @@
                                 <table class="table table-bordered table-striped">
                                     <thead>
                                         <tr>
-                                            <th>ID</th>
                                             <th>Item</th>
                                             <th>Motivo</th>
                                             <th>Data de Envio</th>
@@ -116,7 +113,6 @@
                                         @if(isset($manutencoes) && count($manutencoes))
                                             @foreach($manutencoes as $manutencao)
                                                 <tr>
-                                                    <td>{{ $manutencao->id }}</td>
                                                     <td>{{ $manutencao->nome }}</td>
                                                     <td>{{ $manutencao->motivo }}</td>
                                                     <td>{{ \Carbon\Carbon::parse($manutencao->data_envio)->format('d/m/Y') }}</td>

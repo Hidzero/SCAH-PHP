@@ -11,9 +11,7 @@ class Retirada extends Model
 
     protected $fillable = [
         'ferramenta_id',
-        'descricao',
-        'numero_serie',
-        'responsavel',
+        'responsavel_id',
         'previsao_retorno',
         'uso_interno',
         'obra_id',
@@ -23,6 +21,11 @@ class Retirada extends Model
     public function ferramenta()
     {
         return $this->belongsTo(Ferramenta::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class,'responsavel_id');
     }
 
     // Relação com a obra (caso tenha sido retirada para uma obra)

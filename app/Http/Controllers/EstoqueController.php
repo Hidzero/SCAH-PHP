@@ -30,6 +30,7 @@ class EstoqueController extends Controller
 
     public function store(Request $request)
     {
+        dd($request);
         try {
             // Criar registro de retirada
             Retirada::create([

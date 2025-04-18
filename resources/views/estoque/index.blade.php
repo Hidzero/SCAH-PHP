@@ -37,7 +37,6 @@
                                         <tr>
                                             <th>Nome</th>
                                             <th>Numero de Serie</th>
-                                            <th>Ações</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -46,9 +45,6 @@
                                                 <tr>
                                                     <td>{{ $item->nome }}</td>
                                                     <td>{{ $item->numero_serie }}</td>
-                                                    <td>
-                                                        <a href="{{ route('estoque.retirar') }}" class="btn btn-primary btn-sm">Retirar Ferramenta</a>
-                                                    </td>
                                                 </tr>
                                             @endforeach
                                         @else
@@ -70,7 +66,6 @@
                                             <th>Item</th>
                                             <th>Retirado por</th>
                                             <th>Data</th>
-                                            <th>Ações</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -81,10 +76,6 @@
                                                     <td>{{ $retirada->ferramenta->nome }}</td>
                                                     <td>{{ $retirada->user->name }}</td>
                                                     <td>{{ \Carbon\Carbon::parse($retirada->data_retirada)->format('d/m/Y H:i') }}</td>
-                                                    <td>
-                                                        <a href="#" class="btn btn-primary btn-sm">Entregar Ferramenta</a>
-                                                        <a href="#" class="btn btn-danger btn-sm">Enviar para Manutenção</a>
-                                                    </td>
                                                 </tr>
                                             @endforeach
                                         @else

@@ -16,5 +16,10 @@ class Ferramenta extends Model
         'nome',
         'descricao',
         'numero_serie',
+        'em_uso',
+    ];
+
+    protected $casts = [
+      'em_uso' => 'boolean',
     ];
 }

@@ -72,7 +72,6 @@
                                     <tbody>
                                         @if(isset($retiradas) && count($retiradas))
                                             @foreach($retiradas as $retirada)
-                                            {{-- @dd($retirada) --}}
                                                 <tr>
                                                     <td>{{ $retirada->ferramenta->nome }}</td>
                                                     <td>{{ $retirada->responsavel->name }}</td>
@@ -110,10 +109,11 @@
                                     <tbody>
                                         @if(isset($manutencoes) && count($manutencoes))
                                             @foreach($manutencoes as $manutencao)
+                                            {{-- @dd($manutencao) --}}
                                                 <tr>
-                                                    <td>{{ $manutencao->nome }}</td>
-                                                    <td>{{ $manutencao->motivo }}</td>
-                                                    <td>{{ \Carbon\Carbon::parse($manutencao->data_envio)->format('d/m/Y') }}</td>
+                                                    <td>{{ $manutencao->retirada->ferramenta->nome }}</td>
+                                                    <td>{{ $manutencao->descricao }}</td>
+                                                    <td>{{ \Carbon\Carbon::parse($manutencao->data_retorno)->format('d/m/Y') }}</td>
                                                     <td>{{ ucfirst($manutencao->status) }}</td>
                                                 </tr>
                                             @endforeach

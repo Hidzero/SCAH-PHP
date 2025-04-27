@@ -37,7 +37,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     //   <a href="{{ route('admin.dashboard') }}">Acesso Administrativo</a>
     // @endif
 
-    
+
 
     Route::get('/', function () {
         return view('dashboard');
@@ -57,7 +57,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('retirar', [EstoqueController::class, 'retirar'])->name('retirar');
         Route::post('retirar/store', [EstoqueController::class, 'store'])->name('store');
         Route::get('devolucao', [EstoqueController::class, 'devolucao'])->name('devolucao');
-        Route::post('devolucao', [EstoqueController::class, 'devolucaoStore'])->name('devolucao.store');
+        Route::post('devolucao/store', [EstoqueController::class, 'storeDevolucao'])
+            ->name('devolucao.store');
+        Route::post('devolucao/defeito', [EstoqueController::class, 'storeDevolucaoDefeito'])
+            ->name('devolucao.defeito');
+
     });
 
     // Rotas de Manutenção
@@ -83,7 +87,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Rota de Consulta
     Route::get('consulta/gpt', [ConsultaController::class, 'gpt'])->name('consulta.gpt');
-    
+
     Route::middleware('auth')->group(function () {
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -91,4 +95,4 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

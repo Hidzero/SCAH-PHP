@@ -11,11 +11,13 @@ return new class extends Migration {
         Schema::create('manutencoes', function (Blueprint $table) {
             $table->id();
             $table->foreignId('retirada_id')
-                  ->constrained('retiradas')
-                  ->onDelete('cascade');
+                ->constrained('retiradas')
+                ->onDelete('cascade');
             $table->date('data_retorno');
-            $table->boolean('precisa_manutencao')->default(false);
+            $table->date('data_conserto')->nullable();
             $table->text('descricao')->nullable();
+            $table->enum('status', ['aguardando peça', 'em conserto', 'condenado', 'voltar para estoque'])
+                ->default('aguardando peça');
             $table->timestamps();
             $table->softDeletes();
         });

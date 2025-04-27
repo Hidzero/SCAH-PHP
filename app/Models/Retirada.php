@@ -15,8 +15,11 @@ class Retirada extends Model
         'previsao_retorno',
         'uso_interno',
         'obra_id',
+        'deleted_at',
     ];
 
+    protected $dates = ['deleted_at'];
+    
     // Relação com a ferramenta
     public function ferramenta()
     {

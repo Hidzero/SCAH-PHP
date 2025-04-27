@@ -14,8 +14,9 @@ class Manutencao extends Model
     protected $fillable = [
         'retirada_id',
         'data_retorno',
-        'precisa_manutencao',
+        'data_conserto',
         'descricao',
+        'status'
     ];
 
     /**

@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('placa')->unique(); // Placa do veículo (única)
             $table->integer('km_atual')->default(0); // KM Atual do veículo
             $table->timestamps(); // Criado em / Atualizado em
+            $table->softDeletes();
         });
     }
 

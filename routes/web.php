@@ -55,8 +55,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::prefix('estoque')->name('estoque.')->group(function () {
         Route::get('visualizar', [EstoqueController::class, 'visualizar'])->name('visualizar');
         Route::get('retirar', [EstoqueController::class, 'retirar'])->name('retirar');
-        Route::get('devolucao', [EstoqueController::class, 'devolucao'])->name('devolucao');
         Route::post('retirar/store', [EstoqueController::class, 'store'])->name('store');
+        Route::get('devolucao', [EstoqueController::class, 'devolucao'])->name('devolucao');
+        Route::post('devolucao', [EstoqueController::class, 'devolucaoStore'])->name('devolucao.store');
     });
 
     // Rotas de Manutenção

@@ -23,7 +23,7 @@ class Retirada extends Model
         return $this->belongsTo(Ferramenta::class);
     }
 
-    public function user()
+    public function responsavel()
     {
         return $this->belongsTo(User::class,'responsavel_id');
     }

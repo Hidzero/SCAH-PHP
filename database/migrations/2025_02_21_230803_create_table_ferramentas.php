@@ -16,7 +16,9 @@ return new class extends Migration
             $table->string('nome');
             $table->text('descricao')->nullable();
             $table->string('numero_serie')->nullable();
+            $table->boolean('em_uso')->default(false);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

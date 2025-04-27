@@ -22,7 +22,8 @@ class EstoqueController extends Controller
 
     public function retirar()
     {
-        $ferramentas = Ferramenta::all();
+        $ferramentas = Ferramenta::where('em_uso', false)
+            ->get();
         $obras = Obra::all();
         $responsaveis = User::all();
         return view('estoque.retirar', compact('ferramentas', 'obras', 'responsaveis'));
@@ -30,7 +31,7 @@ class EstoqueController extends Controller
 
     public function store(Request $request)
     {
-        dd($request);
+        // dd($request);
         try {
             // Criar registro de retirada
             Retirada::create([
@@ -39,7 +40,12 @@ class EstoqueController extends Controller
                 'previsao_retorno' => $request->previsao_retorno,
                 'uso_interno' => $request->has('uso_interno') ? 1 : 0,
                 'obra_id' => $request->obra_id,
+                'created_at' => now(),
             ]);
+
+            Ferramenta::where('id', $request->ferramenta_id)
+                ->update(['em_uso' => true]);
+
 
             return redirect()->route('estoque.visualizar')
                 ->with('success', 'Retirada registrada com sucesso!');
@@ -47,6 +53,17 @@ class EstoqueController extends Controller
             return redirect()->route('estoque.visualizar')
                 ->with('error', 'Erro ao registrar a retirada. Tente novamente.');
         }
+    }
+
+    public function devolucao(Request $request)
+    {
+        $retirada = Retirada::all();
+        return view('estoque.devolucao', compact('retirada'));
+    }
+
+    public function devolucaoStore(Request $request)
+    {
+        dd($request);
     }
 
 }

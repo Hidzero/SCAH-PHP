@@ -19,6 +19,7 @@ return new class extends Migration
             $table->boolean('uso_interno')->default(false);
             $table->foreignId('obra_id')->nullable()->constrained('obras')->onDelete('set null');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

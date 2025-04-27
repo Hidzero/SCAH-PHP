@@ -65,17 +65,24 @@
                                         <tr>
                                             <th>Item</th>
                                             <th>Retirado por</th>
+                                            <th>Usando em</th>
                                             <th>Data</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @if(isset($retiradas) && count($retiradas))
                                             @foreach($retiradas as $retirada)
-                                            {{-- @dd($retirada->user) --}}
+                                            {{-- @dd($retirada) --}}
                                                 <tr>
                                                     <td>{{ $retirada->ferramenta->nome }}</td>
-                                                    <td>{{ $retirada->user->name }}</td>
-                                                    <td>{{ \Carbon\Carbon::parse($retirada->data_retirada)->format('d/m/Y H:i') }}</td>
+                                                    <td>{{ $retirada->responsavel->name }}</td>
+                                                    <td>
+                                                        {{ $retirada->obra_id
+                                                            ? $retirada->obra->cliente
+                                                            : 'Uso Interno' }}
+                                                      </td>
+                                                      
+                                                    <td>{{ \Carbon\Carbon::parse($retirada->created_at)->format('d/m/Y H:i') }}</td>
                                                 </tr>
                                             @endforeach
                                         @else

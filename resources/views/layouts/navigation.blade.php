@@ -91,7 +91,7 @@
                         <x-slot name="content">
                             <x-dropdown-link :href="route('veiculos.saida')">Saída de Veículo</x-dropdown-link>
                             <x-dropdown-link :href="route('veiculos.retorno')">Retorno de Veículo</x-dropdown-link>
-                            <x-dropdown-link :href="route('veiculos.dashboard_veiculos')">Dashboard de Veículos</x-dropdown-link>
+                            <x-dropdown-link :href="route('veiculos.dashboard')">Dashboard de Veículos</x-dropdown-link>
                         </x-slot>
                     </x-dropdown>
 
@@ -178,7 +178,7 @@
             <div class="px-3 text-gray-900 uppercase text-xs font-bold">Veículos</div>
             <x-responsive-nav-link :href="route('veiculos.saida')">Saída de Veículo</x-responsive-nav-link>
             <x-responsive-nav-link :href="route('veiculos.retorno')">Retorno de Veículo</x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('veiculos.dashboard_veiculos')">Dashboard de Veículos</x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('veiculos.dashboard')">Dashboard de Veículos</x-responsive-nav-link>
 
             <!-- Link Consulta -->
             <x-responsive-nav-link :href="route('consulta.gpt')">Consulta</x-responsive-nav-link>

@@ -79,10 +79,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Rotas de Veículos
     Route::prefix('veiculos')->name('veiculos.')->group(function () {
-        Route::get('saida', [VeiculoController::class, 'saida'])->name('saida');
-        Route::get('retorno', [VeiculoController::class, 'retorno'])->name('retorno');
-        // Use um nome que não conflite com a rota 'home'
-        Route::get('dashboard', [VeiculoController::class, 'dashboard'])->name('dashboard_veiculos');
+        Route::get('saida', [VeiculoController::class, 'indexSaida'])->name('saida');
+        Route::post('saida/store', [VeiculoController::class, 'storeSaida'])->name('saida.store');
+        Route::get('retorno', [VeiculoController::class, 'indexRetorno'])->name('retorno');
+        Route::post('retorno/store', [VeiculoController::class, 'storeRetorno'])->name('retorno.store');
+        Route::get('dashboard', [VeiculoController::class, 'dashboard'])->name('dashboard');
     });
 
     // Rota de Consulta

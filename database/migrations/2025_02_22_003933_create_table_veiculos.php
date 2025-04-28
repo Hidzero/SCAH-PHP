@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('marca'); // Marca do veículo
             $table->string('placa')->unique(); // Placa do veículo (única)
             $table->integer('km_atual')->default(0); // KM Atual do veículo
+            $table->boolean('em_uso')->default(false);
             $table->timestamps(); // Criado em / Atualizado em
             $table->softDeletes();
         });

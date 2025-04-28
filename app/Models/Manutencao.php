@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Manutencao extends Model
 {
     use HasFactory;
+    use SoftDeletes;
 
     protected $table = 'manutencoes';
 
@@ -24,6 +26,9 @@ class Manutencao extends Model
      */
     public function retirada()
     {
-        return $this->belongsTo(Retirada::class);
+        // isso faz com que mesmo Retiradas soft-deleted sejam retornadas
+        return $this->belongsTo(Retirada::class)
+                    ->withTrashed();
     }
+
 }

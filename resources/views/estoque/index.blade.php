@@ -109,7 +109,7 @@
                                     <tbody>
                                         @if(isset($manutencoes) && count($manutencoes))
                                             @foreach($manutencoes as $manutencao)
-                                            {{-- @dd($manutencao) --}}
+                                            {{-- @dd($manutencao->retirada) --}}
                                                 <tr>
                                                     <td>{{ $manutencao->retirada->ferramenta->nome }}</td>
                                                     <td>{{ $manutencao->descricao }}</td>

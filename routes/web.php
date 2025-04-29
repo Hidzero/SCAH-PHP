@@ -68,7 +68,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::prefix('manutencao')->name('manutencao.')->group(function () {
         Route::get('atendimento-os', [ManutencaoController::class, 'atendimentoOs'])->name('atendimento_os.index');
         Route::get('ordem-servico', [ManutencaoController::class, 'ordemServico'])->name('ordem_servico.index');
-        Route::get('gestao', [ManutencaoController::class, 'gestao'])->name('gestao_manutencao.index');
+        Route::get('gestao', [ManutencaoController::class, 'index'])->name('gestao_manutencao.index');
+        Route::post('{id}/solicitar-peca', [ManutencaoController::class, 'solicitarPeca'])->name('solicitar');
+        Route::post('{id}/em-conserto',   [ManutencaoController::class, 'enviarConserto'])->name('conserto');
+        Route::post('{id}/condenar',      [ManutencaoController::class, 'condenar'])->name('condenar');
+        Route::post('{id}/voltar-aguardando', [ManutencaoController::class, 'voltarAguardando'])->name('voltar');
+        Route::post('{id}/voltar-estoque',    [ManutencaoController::class, 'voltarEstoque'])->name('voltar.estoque');    
         Route::get('consulta-manuais', [ManutencaoController::class, 'consultaManuais'])->name('consulta_manuales.index');
     });
 

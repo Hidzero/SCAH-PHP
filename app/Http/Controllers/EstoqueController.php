@@ -15,10 +15,22 @@ class EstoqueController extends Controller
     {
         $estoque = Ferramenta::all();
         $retiradas = Retirada::whereNull('deleted_at')->get();
-        $manutencoes = Manutencao::whereNull('deleted_at')->get();
-        $reparadas = Ferramenta::all();
-        // dd($estoque);
-        return view('estoque.index', compact('estoque', 'retiradas', 'manutencoes', 'reparadas'));
+        // Manutenções que aparecem na aba “Manutenção”:
+        $manutencoes = Manutencao::with('retirada.ferramenta')
+            ->whereIn('status', ['aguardando peça', 'em conserto', 'condenado'])
+            ->get();
+
+        // Manutenções que aparecem na aba “Reparadas”:
+        $reparadas = Manutencao::with('retirada.ferramenta')
+            ->where('status', 'voltar para estoque')
+            ->get();
+
+        return view('estoque.index', compact(
+            'estoque',
+            'retiradas',
+            'manutencoes',
+            'reparadas'
+        ));
     }
 
     public function retirar()

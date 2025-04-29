@@ -8,27 +8,27 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Manutencao extends Model
 {
-    use HasFactory;
-    use SoftDeletes;
+    use HasFactory, SoftDeletes;
 
     protected $table = 'manutencoes';
 
     protected $fillable = [
         'retirada_id',
         'data_retorno',
-        'data_conserto',
+        'precisa_manutencao',
+        'status',
         'descricao',
-        'status'
+        'peca_solicitada',
     ];
 
-    /**
-     * Relação com a Retirada associada
-     */
+    protected $casts = [
+        'precisa_manutencao' => 'boolean',
+        'data_retorno'        => 'date',
+        'peca_solicitada'     => 'boolean',
+    ];
+
     public function retirada()
     {
-        // isso faz com que mesmo Retiradas soft-deleted sejam retornadas
-        return $this->belongsTo(Retirada::class)
-                    ->withTrashed();
+        return $this->belongsTo(Retirada::class)->withTrashed();
     }
-
 }

@@ -1,153 +1,148 @@
 <x-app-layout>
-    @if (session('success'))
-        <x-message type="success">
-            {{ session('success') }}
-        </x-message>
-    @endif
-
-    @if (session('error'))
-        <x-message type="error">
-            {{ session('error') }}
-        </x-message>
-    @endif
-
-
-
-
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Ferramenta') }}
-        </h2>
+      <h2 class="text-2xl font-semibold text-gray-900">
+        {{ __('Ferramentas') }}
+      </h2>
     </x-slot>
-
-    <div class="py-12">
-        <div class="container-lg px-4">
-            <!-- Card de Cadastro (permanece igual) -->
-            <div class="card mb-4">
-                <div class="card-header">
-                    Cadastrar Ferramenta
-                </div>
-                <div class="card-body">
-                    <form action="{{ route('ferramentas.store') }}" method="POST">
-                        @csrf
-                        <div class="mb-3">
-                            <label for="nome" class="form-label">Nome da Ferramenta</label>
-                            <input type="text" class="form-control" id="nome" name="nome"
-                                placeholder="Digite o nome da ferramenta" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="descricao" class="form-label">Descrição</label>
-                            <textarea class="form-control" id="descricao" name="descricao" rows="3"
-                                placeholder="Digite a descrição" required></textarea>
-                        </div>
-                        <div class="mb-3">
-                            <label for="numero_serie" class="form-label">Número de Série</label>
-                            <input type="text" class="form-control" id="numero_serie" name="numero_serie"
-                                placeholder="Digite o número de série" required>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Cadastrar</button>
-                    </form>
-                </div>
+  
+    <div class="py-8">
+      <div class="container mx-auto px-4 space-y-8">
+  
+        <!-- Card de Cadastro -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+          <h3 class="text-xl font-medium text-gray-700 mb-4">Cadastrar Nova Ferramenta</h3>
+          <form action="{{ route('ferramentas.store') }}" method="POST" class="space-y-4">
+            @csrf
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <label for="nome" class="block text-sm font-medium text-gray-600">Nome</label>
+                <input
+                  type="text" id="nome" name="nome" required
+                  class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                  placeholder="Nome da ferramenta"
+                />
+              </div>
+              <div>
+                <label for="numero_serie" class="block text-sm font-medium text-gray-600">Número de Série</label>
+                <input
+                  type="text" id="numero_serie" name="numero_serie" required
+                  class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                  placeholder="Série"
+                />
+              </div>
+              <div>
+                <label for="descricao" class="block text-sm font-medium text-gray-600">Descrição</label>
+                <textarea
+                  id="descricao" name="descricao" rows="1" required
+                  class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                  placeholder="Breve descrição"
+                ></textarea>
+              </div>
             </div>
-
-            <!-- Card de Listagem -->
-            <div class="card">
-                <div class="card-header">
-                    Ferramentas Cadastradas
-                </div>
-                <div class="card-body">
-                    @if($ferramentas->count())
-                        <div class="table-responsive">
-                            <table class="table table-bordered table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>Nome</th>
-                                        <th>Descrição</th>
-                                        <th>Número de Série</th>
-                                        <th>Ações</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach($ferramentas as $ferramenta)
-                                        <!-- Linha de visualização -->
-                                        <tr id="view-row-{{ $ferramenta->id }}">
-                                            <td>{{ $ferramenta->id }}</td>
-                                            <td>{{ $ferramenta->nome }}</td>
-                                            <td>{{ $ferramenta->descricao }}</td>
-                                            <td>{{ $ferramenta->numero_serie }}</td>
-                                            <td>
-                                                <div class="d-flex gap-1">
-                                                    <button type="button" class="btn btn-warning btn-sm"
-                                                        onclick="showEditForm({{ $ferramenta->id }})">
-                                                        Editar
-                                                    </button>
-                                                    <form action="{{ route('ferramentas.destroy', $ferramenta->id) }}"
-                                                        method="POST" class="d-inline-flex flex-fill">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="btn btn-danger btn-sm"
-                                                            onclick="return confirm('Tem certeza que deseja excluir essa ferramenta?')">
-                                                            Deletar
-                                                        </button>
-                                                    </form>
-                                                </div>
-                                            </td>
-                                        </tr>
-
-                                        <!-- Linha de edição (inicialmente oculta) -->
-                                        <tr id="edit-row-{{ $ferramenta->id }}" style="display: none;">
-                                            <td>{{ $ferramenta->id }}</td>
-                                            <td>
-                                                <!-- Aqui colocamos um form que engloba a linha ou os inputs -->
-                                                <form action="{{ route('ferramentas.update', $ferramenta->id) }}" method="POST"
-                                                    id="edit-form-{{ $ferramenta->id }}">
-                                                    @csrf
-                                                    @method('PUT')
-                                                    <input type="text" name="nome" class="form-control"
-                                                        value="{{ $ferramenta->nome }}">
-                                            </td>
-                                            <td>
-                                                <input type="text" name="descricao" class="form-control"
-                                                    value="{{ $ferramenta->descricao }}">
-                                            </td>
-                                            <td>
-                                                <input type="text" name="numero_serie" class="form-control"
-                                                    value="{{ $ferramenta->numero_serie }}">
-                                            </td>
-                                            <td>
-                                                <div class="d-flex gap-1">
-                                                    <button type="submit" class="btn btn-success btn-sm">Salvar</button>
-                                                    <button type="button" class="btn btn-secondary btn-sm"
-                                                        onclick="cancelEdit({{ $ferramenta->id }})">
-                                                        Cancelar
-                                                    </button>
-                                                </div>
-                                                </form>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    @else
-                        <p class="mb-0">Nenhuma ferramenta cadastrada.</p>
-                    @endif
-                </div>
+            <div class="text-right">
+              <button
+                type="submit"
+                class="inline-flex items-center px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 transition"
+              >
+                Cadastrar
+              </button>
             </div>
+          </form>
         </div>
+  
+        <!-- Card de Lista -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+          <h3 class="text-xl font-medium text-gray-700 mb-4">Ferramentas Cadastradas</h3>
+          @if($ferramentas->count())
+            <div class="overflow-x-auto">
+              <table class="min-w-full divide-y divide-gray-200 table-auto">
+                <thead class="bg-gray-50">
+                  <tr>
+                    <th class="px-4 py-2 text-left text-xs font-semibold text-gray-500 uppercase">ID</th>
+                    <th class="px-4 py-2 text-left text-xs font-semibold text-gray-500 uppercase">Nome</th>
+                    <th class="px-4 py-2 text-left text-xs font-semibold text-gray-500 uppercase">Descrição</th>
+                    <th class="px-4 py-2 text-left text-xs font-semibold text-gray-500 uppercase">Série</th>
+                    <th class="px-4 py-2 text-center text-xs font-semibold text-gray-500 uppercase">Ações</th>
+                  </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                  @foreach($ferramentas as $f)
+                    <tr class="hover:bg-gray-50" id="view-row-{{ $f->id }}">
+                      <td class="px-4 py-2 text-sm text-gray-700">{{ $f->id }}</td>
+                      <td class="px-4 py-2 text-sm text-gray-700">{{ $f->nome }}</td>
+                      <td class="px-4 py-2 text-sm text-gray-700">{{ $f->descricao }}</td>
+                      <td class="px-4 py-2 text-sm text-gray-700">{{ $f->numero_serie }}</td>
+                      <td class="px-4 py-2 text-sm text-gray-700 text-center space-x-2">
+                        <button
+                          type="button"
+                          class="inline-flex px-2 py-1 bg-amber-500 text-white text-xs font-medium rounded hover:bg-amber-600 transition"
+                          onclick="showEditForm({{ $f->id }})"
+                        >Editar</button>
+                        <form action="{{ route('ferramentas.destroy',$f->id) }}" method="POST" class="inline">
+                          @csrf @method('DELETE')
+                          <button
+                            type="submit"
+                            class="inline-flex px-2 py-1 bg-red-600 text-white text-xs font-medium rounded hover:bg-red-700 transition"
+                            onclick="return confirm('Deseja excluir?')"
+                          >Excluir</button>
+                        </form>
+                      </td>
+                    </tr>
+                    <tr id="edit-row-{{ $f->id }}" class="hidden bg-gray-50" >
+                      <td class="px-4 py-2 text-sm text-gray-700">{{ $f->id }}</td>
+                      <form action="{{ route('ferramentas.update',$f->id) }}" method="POST" class="w-full">
+                        @csrf @method('PUT')
+                        <td class="px-4 py-2 text-sm">
+                          <input
+                            type="text" name="nome" value="{{ $f->nome }}"
+                            class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm"
+                          />
+                        </td>
+                        <td class="px-4 py-2 text-sm">
+                          <input
+                            type="text" name="descricao" value="{{ $f->descricao }}"
+                            class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm"
+                          />
+                        </td>
+                        <td class="px-4 py-2 text-sm">
+                          <input
+                            type="text" name="numero_serie" value="{{ $f->numero_serie }}"
+                            class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm"
+                          />
+                        </td>
+                        <td class="px-4 py-2 text-sm text-center space-x-2">
+                          <button
+                            type="submit"
+                            class="inline-flex px-2 py-1 bg-green-600 text-white text-xs font-medium rounded hover:bg-green-700 transition"
+                          >Salvar</button>
+                          <button
+                            type="button"
+                            onclick="cancelEdit({{ $f->id }})"
+                            class="inline-flex px-2 py-1 bg-gray-200 text-gray-800 text-xs font-medium rounded hover:bg-gray-300 transition"
+                          >Cancelar</button>
+                        </td>
+                      </form>
+                    </tr>
+                  @endforeach
+                </tbody>
+              </table>
+            </div>
+          @else
+            <p class="text-center text-gray-500">Nenhuma ferramenta cadastrada.</p>
+          @endif
+        </div>
+      </div>
     </div>
-
-    <!-- Scripts para alternar entre visualização e edição -->
+  
     <script>
-        function showEditForm(id) {
-            document.getElementById('view-row-' + id).style.display = 'none';
-            document.getElementById('edit-row-' + id).style.display = 'table-row';
-        }
-
-        function cancelEdit(id) {
-            document.getElementById('edit-row-' + id).style.display = 'none';
-            document.getElementById('view-row-' + id).style.display = 'table-row';
-        }
+      function showEditForm(id) {
+        document.getElementById('view-row-'+id).classList.add('hidden');
+        document.getElementById('edit-row-'+id).classList.remove('hidden');
+      }
+      function cancelEdit(id) {
+        document.getElementById('edit-row-'+id).classList.add('hidden');
+        document.getElementById('view-row-'+id).classList.remove('hidden');
+      }
     </script>
-</x-app-layout>
+  </x-app-layout>
+  

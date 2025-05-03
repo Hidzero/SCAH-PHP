@@ -1,286 +1,157 @@
 <x-app-layout>
   <x-slot name="header">
-    <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+    <h2 class="text-2xl font-semibold text-gray-900">
       {{ __('Gráficos Gerais') }}
     </h2>
   </x-slot>
 
-  <div class="py-12">
-    <div class="container-lg px-4">
+  <div class="py-8">
+    <div class="container mx-auto px-4">
 
-      {{-- Row 1: três resumos lado a lado --}}
-      <div class="row g-4 mb-6">
-        <div class="col-lg-4 col-md-6">
-          <div class="card h-100">
-            <div class="card-header">Retiradas por Mês</div>
-            <div class="card-body" style="height:250px;">
-              <canvas id="chartRetiradas"></canvas>
-            </div>
+      <!-- Row 1: Resumos rápidos -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
+        <div class="bg-white rounded-lg shadow p-4">
+          <h3 class="text-lg font-medium text-gray-700 mb-2">Retiradas por Mês</h3>
+          <div class="h-52">
+            <canvas id="chartRetiradas"></canvas>
           </div>
         </div>
-        <div class="col-lg-4 col-md-6">
-          <div class="card h-100">
-            <div class="card-header">Manutenções por Status</div>
-            <div class="card-body" style="height:250px;">
-              <canvas id="chartManutencao"></canvas>
-            </div>
+
+        <div class="bg-white rounded-lg shadow p-4">
+          <h3 class="text-lg font-medium text-gray-700 mb-2">Manutenções por Status</h3>
+          <div class="h-52">
+            <canvas id="chartManutencao"></canvas>
           </div>
         </div>
-        <div class="col-lg-4 col-md-12">
-          <div class="card h-100">
-            <div class="card-header">Veículos em Uso x Disponíveis</div>
-            <div class="card-body" style="height:250px;">
-              <canvas id="chartVeiculos"></canvas>
-            </div>
+
+        <div class="bg-white rounded-lg shadow p-4">
+          <h3 class="text-lg font-medium text-gray-700 mb-2">Veículos em Uso x Disponíveis</h3>
+          <div class="h-52">
+            <canvas id="chartVeiculos"></canvas>
           </div>
         </div>
       </div>
 
-      {{-- Row 2: evolução de retiradas e tempo médio --}}
-      <div class="row g-4 mb-6">
-        <div class="col-md-6">
-          <div class="card h-100">
-            <div class="card-header">Evolução de Retiradas (Mês a Mês)</div>
-            <div class="card-body" style="height:300px;">
-              <canvas id="chartRetiradasAno"></canvas>
-            </div>
+      <!-- Row 2: Gráficos comparativos -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-10">
+        <div class="bg-white rounded-lg shadow p-4">
+          <h3 class="text-lg font-medium text-gray-700 mb-2">Evolução de Retiradas (Mês a Mês)</h3>
+          <div class="h-64">
+            <canvas id="chartRetiradasAno"></canvas>
           </div>
         </div>
-        <div class="col-md-6">
-          <div class="card h-100">
-            <div class="card-header">Tempo Médio de Manutenção (dias)</div>
-            <div class="card-body" style="height:300px;">
-              <canvas id="chartTempoMedio"></canvas>
-            </div>
+
+        <div class="bg-white rounded-lg shadow p-4">
+          <h3 class="text-lg font-medium text-gray-700 mb-2">Tempo Médio de Manutenção (dias)</h3>
+          <div class="h-64">
+            <canvas id="chartTempoMedio"></canvas>
           </div>
         </div>
       </div>
 
-      {{-- Row 3: distribuição de status e top ferramentas --}}
-      <div class="row g-4 mb-6">
-        <div class="col-md-6">
-          <div class="card h-100">
-            <div class="card-header">Status de Ferramentas</div>
-            <div class="card-body" style="height:300px;">
-              <canvas id="chartStatusFerramentas"></canvas>
-            </div>
+      <!-- Row 3: Distribuição e Top 5 -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-10">
+        <div class="bg-white rounded-lg shadow p-4">
+          <h3 class="text-lg font-medium text-gray-700 mb-2">Status de Ferramentas</h3>
+          <div class="h-64">
+            <canvas id="chartStatusFerramentas"></canvas>
           </div>
         </div>
-        <div class="col-md-6">
-          <div class="card h-100">
-            <div class="card-header">Top 5 Ferramentas Mais Retiradas</div>
-            <div class="card-body" style="height:300px;">
-              <canvas id="chartTopFerramentas"></canvas>
-            </div>
+
+        <div class="bg-white rounded-lg shadow p-4">
+          <h3 class="text-lg font-medium text-gray-700 mb-2">Top 5 Ferramentas Mais Retiradas</h3>
+          <div class="h-64">
+            <canvas id="chartTopFerramentas"></canvas>
           </div>
         </div>
       </div>
 
-      {{-- Row 4: quilometragem médio full width --}}
-      <div class="row g-4">
-        <div class="col-12">
-          <div class="card">
-            <div class="card-header">Quilometragem Média Mensal</div>
-            <div class="card-body" style="height:300px;">
-              <canvas id="chartKmMedio"></canvas>
-            </div>
-          </div>
+      <!-- Row 4: Quilometragem média -->
+      <div class="bg-white rounded-lg shadow p-4 mb-10">
+        <h3 class="text-lg font-medium text-gray-700 mb-2">Quilometragem Média Mensal</h3>
+        <div class="h-64">
+          <canvas id="chartKmMedio"></canvas>
         </div>
       </div>
-
     </div>
   </div>
 
+  <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
   <script>
-    // antes…  
+    // Retiradas por Mês
     const rawLabelsRet = @json(array_column($retiradasData, 'mes'));
-    // ["2025-01","2025-02",…]
-
-    // converte para ["janeiro 2025","fevereiro 2025",…]
     const labelsRet = rawLabelsRet.map(m => {
       const [year, month] = m.split('-');
-      const date = new Date(year, month - 1);
-      return date.toLocaleString('pt-BR', { month: 'long' }) + ' ' + year;
+      return new Date(year, month - 1)
+        .toLocaleString('pt-BR', { month: 'long' }) + ' ' + year;
+    });
+    const dataRet = @json(array_column($retiradasData, 'total'));
+    new Chart(document.getElementById('chartRetiradas'), {
+      type: 'bar',
+      data: { labels: labelsRet, datasets: [{ label: 'Retiradas', data: dataRet }] },
+      options: { maintainAspectRatio:false, scales:{ y:{ beginAtZero:true, suggestedMax:10, ticks:{ stepSize:1, precision:0 } } } }
     });
 
-    const dataRet = @json(array_column($retiradasData, 'total'));
+    // Manutenções por Status
+    new Chart(document.getElementById('chartManutencao'), {
+      type: 'pie',
+      data: { labels: @json(array_column($manutencaoData,'status')), datasets:[{ data:@json(array_column($manutencaoData,'total')) }] },
+      options:{ maintainAspectRatio:false }
+    });
 
-    new Chart(
-      document.getElementById('chartRetiradas'),
-      {
-        type: 'bar',
-        data: {
-          labels: labelsRet,
-          datasets: [{
-            label: 'Retiradas',
-            data: dataRet
-          }]
-        },
-        options: {
-          maintainAspectRatio: false,
-          scales: {
-            y: {
-              beginAtZero: true,
-              suggestedMax: 10,
-              ticks: {
-                stepSize: 1,
-                precision: 0
-              }
-            }
-          }
-        }
-      }
-    );
+    // Veículos em Uso x Disponíveis
+    new Chart(document.getElementById('chartVeiculos'), {
+      type: 'doughnut',
+      data:{ labels:['Em Uso','Disponíveis'], datasets:[{ data:[@json($veiculosUso['em_uso']),@json($veiculosUso['disponiveis'])] }] },
+      options:{ maintainAspectRatio:false }
+    });
 
-
-    const labelsMan = @json(array_column($manutencaoData, 'status'));
-    const dataMan = @json(array_column($manutencaoData, 'total'));
-    new Chart(
-      document.getElementById('chartManutencao'),
-      {
-        type: 'pie',
-        data: {
-          labels: labelsMan,
-          datasets: [{
-            label: 'Manutenções',
-            data: dataMan
-          }]
-        },
-        options: {
-          maintainAspectRatio: false
-        }
-      }
-    );
-
-    const uso = @json($veiculosUso['em_uso']);
-    const disp = @json($veiculosUso['disponiveis']);
-    new Chart(
-      document.getElementById('chartVeiculos'),
-      {
-        type: 'doughnut',
-        data: {
-          labels: ['Em Uso', 'Disponíveis'],
-          datasets: [{
-            label: 'Veículos',
-            data: [uso, disp]
-          }]
-        },
-        options: {
-          maintainAspectRatio: false
-        }
-      }
-    );
-
-    // 1) Retiradas ao longo do ano
-    // pega o array ["2025-01","2025-02",…]
-    const rawLabelsAno = @json(array_column($retiradasAno, 'mes'));
-    // converte para ["janeiro 2025","fevereiro 2025",…]
+    // Evolução de Retiradas (Ano)
+    const rawLabelsAno = @json(array_column($retiradasAno,'mes'));
     const labelsAno = rawLabelsAno.map(m => {
       const [year, month] = m.split('-');
-      const date = new Date(year, month - 1);
-      // month: 'long' traz o nome completo em pt-BR
-      return date.toLocaleString('pt-BR', { month: 'long' }) + ' ' + year;
+      return new Date(year, month-1)
+        .toLocaleString('pt-BR',{ month:'long' })+ ' '+year;
     });
-
-    const dataAno = @json(array_column($retiradasAno, 'total'));
-
     new Chart(document.getElementById('chartRetiradasAno'), {
-      type: 'line',
-      data: {
-        labels: labelsAno,
-        datasets: [{
-          label: 'Retiradas',
-          data: dataAno
-        }]
-      },
-      options: {
-        maintainAspectRatio: false,
-        scales: {
-          y: {
-            beginAtZero: true,
-            precision: 0
-          }
-        }
-      }
+      type:'line',
+      data:{ labels:labelsAno, datasets:[{ label:'Retiradas', data:@json(array_column($retiradasAno,'total')) }] },
+      options:{ maintainAspectRatio:false, scales:{ y:{ beginAtZero:true, precision:0 } } }
     });
 
-
-    // 2) Tempo médio manutenção
-    const labelsTM = @json(array_column($tempoMedio, 'mes'));
-    const dataTM = @json(array_column($tempoMedio, 'media_dias'));
+    // Tempo Médio de Manutenção
     new Chart(document.getElementById('chartTempoMedio'), {
-      type: 'bar',
-      data: { labels: labelsTM, datasets: [{ label: 'Dias Médios', data: dataTM }] },
-      options: { maintainAspectRatio: false, scales: { y: { beginAtZero: true, precision: 0 } } }
+      type:'bar',
+      data:{ labels:@json(array_column($tempoMedio,'mes')), datasets:[{ label:'Dias Médios', data:@json(array_column($tempoMedio,'media_dias')) }] },
+      options:{ maintainAspectRatio:false, scales:{ y:{ beginAtZero:true, precision:0 } } }
     });
 
-    // 3) Distribuição status ferramentas
+    // Status de Ferramentas
     new Chart(document.getElementById('chartStatusFerramentas'), {
-      type: 'doughnut',
-      data: { labels: @json($distFerramenta['labels']), datasets: [{ data: @json($distFerramenta['data']) }] },
-      options: { maintainAspectRatio: false }
+      type:'doughnut',
+      data:{ labels:@json($distFerramenta['labels']), datasets:[{ data:@json($distFerramenta['data']) }] },
+      options:{ maintainAspectRatio:false }
     });
 
-    // 4) Top 5 ferramentas
-    const labelsTop = @json(array_column($topFerramentas, 'nome'));
-    const dataTop = @json(array_column($topFerramentas, 'total'));
-
+    // Top 5 Ferramentas
     new Chart(document.getElementById('chartTopFerramentas'), {
-      type: 'bar',
-      data: {
-        labels: labelsTop,
-        datasets: [{
-          label: 'Retiradas',
-          data: dataTop
-        }]
-      },
-      options: {
-        maintainAspectRatio: false,
-        scales: {
-          y: {
-            beginAtZero: true,
-            ticks: {
-              stepSize: 1,    // marca de 1 em 1
-              precision: 0    // sem casas decimais
-            }
-          }
-        }
-      }
+      type:'bar',
+      data:{ labels:@json(array_column($topFerramentas,'nome')), datasets:[{ label:'Retiradas', data:@json(array_column($topFerramentas,'total')) }] },
+      options:{ maintainAspectRatio:false, scales:{ y:{ beginAtZero:true, ticks:{ stepSize:1, precision:0 } } } }
     });
 
-
-    // 5) Quilometragem média mensal
-    // 5) Quilometragem média mensal (com mês por extenso + ano)
-    const rawLabelsKm = @json(array_column($kmMedioMensal, 'mes'));
-    // ["2025-01","2025-02",…]
+    // Quilometragem Média Mensal
+    const rawLabelsKm = @json(array_column($kmMedioMensal,'mes'));
     const labelsKm = rawLabelsKm.map(m => {
       const [year, month] = m.split('-');
-      const date = new Date(year, month - 1);
-      return date.toLocaleString('pt-BR', { month: 'long' }) + ' ' + year;
+      return new Date(year, month-1)
+        .toLocaleString('pt-BR',{ month:'long' })+' '+year;
     });
-    const dataKm = @json(array_column($kmMedioMensal, 'km_medio'));
-
     new Chart(document.getElementById('chartKmMedio'), {
-      type: 'line',
-      data: {
-        labels: labelsKm,
-        datasets: [{
-          label: 'KM Médio',
-          data: dataKm
-        }]
-      },
-      options: {
-        maintainAspectRatio: false,
-        scales: {
-          y: {
-            beginAtZero: true,
-            precision: 0
-          }
-        }
-      }
+      type:'line',
+      data:{ labels:labelsKm, datasets:[{ label:'KM Médio', data:@json(array_column($kmMedioMensal,'km_medio')) }] },
+      options:{ maintainAspectRatio:false, scales:{ y:{ beginAtZero:true, precision:0 } } }
     });
-
   </script>
 </x-app-layout>

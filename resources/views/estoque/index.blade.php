@@ -1,12 +1,12 @@
 <x-app-layout>
   <x-slot name="header">
-    <h2 class="text-2xl font-semibold text-gray-900">
+    <h1 class="text-2xl font-semibold text-gray-900">
       {{ __('Gestão de Estoque') }}
-    </h2>
+    </h1>
   </x-slot>
 
-  <div class="py-8 container mx-auto px-4" x-data="{ activeTab: 'estoque' }">
-    <div class="bg-white rounded-lg shadow-md">
+  <div class="py-10 container mx-auto px-4" x-data="{ activeTab: 'estoque' }">
+    <div class="bg-white rounded-lg shadow">
       <div class="px-6 py-4 border-b">
         <ul class="flex space-x-6">
           <li>

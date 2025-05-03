@@ -35,9 +35,9 @@
                 ['Manuais', 'manutencao.consulta_manuales.index'],
               ],
               'Veículos' => [
+                ['Dashboard', 'veiculos.dashboard'],
                 ['Saída', 'veiculos.saida'],
                 ['Retorno', 'veiculos.retorno'],
-                ['Dashboard', 'veiculos.dashboard'],
               ],
             ] as $label => $links)
               <x-dropdown align="left" width="48">
@@ -135,9 +135,9 @@
             ['Manuais', 'manutencao.consulta_manuales.index'],
           ],
           'VEÍCULOS' => [
+            ['Dashboard', 'veiculos.dashboard'],
             ['Saída', 'veiculos.saida'],
             ['Retorno', 'veiculos.retorno'],
-            ['Dashboard', 'veiculos.dashboard'],
           ],
         ] as $section => $links)
           <div class="px-4 pt-4 text-gray-500 uppercase text-xs font-semibold">{{ $section }}</div>

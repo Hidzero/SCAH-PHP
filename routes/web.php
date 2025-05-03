@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ObraController;
+use App\Http\Controllers\ManualController;
 use App\Http\Controllers\EstoqueController;
 use App\Http\Controllers\GraficoController;
 use App\Http\Controllers\ProfileController;
@@ -72,8 +73,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('{id}/em-conserto',   [ManutencaoController::class, 'enviarConserto'])->name('conserto');
         Route::post('{id}/condenar',      [ManutencaoController::class, 'condenar'])->name('condenar');
         Route::post('{id}/voltar-aguardando', [ManutencaoController::class, 'voltarAguardando'])->name('voltar');
-        Route::post('{id}/voltar-estoque',    [ManutencaoController::class, 'voltarEstoque'])->name('voltar.estoque');    
-        Route::get('consulta-manuais', [ManutencaoController::class, 'consultaManuais'])->name('consulta_manuales.index');
+        Route::post('{id}/voltar-estoque',    [ManutencaoController::class, 'voltarEstoque'])->name('voltar.estoque'); 
+        Route::get('manuais',       [ManualController::class,'index'])->name('manuais.index');
+        Route::get('manuais/create',[ManualController::class,'create'])->name('manuais.create');
+        Route::post('manuais',      [ManualController::class,'store'])->name('manuais.store');
+        Route::get('manuais/{manual}/download',[ManualController::class,'download'])->name('manuais.download');
+        Route::delete('manuais/{manual}',      [ManualController::class,'destroy'])->name('manuais.destroy');
+    
     });
 
     // Rotas de Veículos

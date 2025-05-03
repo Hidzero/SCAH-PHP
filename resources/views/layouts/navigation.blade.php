@@ -32,8 +32,8 @@
               ],
               'Manutenção' => [
                 ['Gestão', 'manutencao.gestao_manutencao.index'],
-                ['Manuais', 'manutencao.consulta_manuales.index'],
-              ],
+                ['Manuais', 'manutencao.manuais.index'],
+                ],
               'Veículos' => [
                 ['Dashboard', 'veiculos.dashboard'],
                 ['Saída', 'veiculos.saida'],
@@ -132,7 +132,7 @@
           ],
           'MANUTENÇÃO' => [
             ['Gestão', 'manutencao.gestao_manutencao.index'],
-            ['Manuais', 'manutencao.consulta_manuales.index'],
+            ['Manuais', 'manutencao.manuais.index'],
           ],
           'VEÍCULOS' => [
             ['Dashboard', 'veiculos.dashboard'],

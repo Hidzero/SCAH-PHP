@@ -65,4 +65,9 @@ class ManutencaoController extends Controller
 
         return back();
     }
+
+    public function manuais()
+    {
+        return view('manutencao.manuais');
+    }
 }

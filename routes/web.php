@@ -76,11 +76,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('consulta-manuais', [ManutencaoController::class, 'consultaManuais'])->name('consulta_manuales.index');
     });
 
-    // Rota de Relatórios
-    Route::prefix('relatorios')->name('relatorios.')->group(function () {
-        Route::get('ferramentas', [RelatorioController::class, 'ferramentas'])->name('ferramentas');
-    });
-
     // Rotas de Veículos
     Route::prefix('veiculos')->name('veiculos.')->group(function () {
         Route::get('saida', [VeiculoController::class, 'indexSaida'])->name('saida');

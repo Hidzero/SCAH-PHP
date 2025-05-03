@@ -70,11 +70,11 @@
                             <x-dropdown-link :href="route('manutencao.consulta_manuales.index')">Consulta de Manuais</x-dropdown-link>
                         </x-slot>
                     </x-dropdown>
-
+{{-- 
                     <!-- Relatórios -->
                     <x-nav-link :href="route('relatorios.ferramentas')" :active="request()->routeIs('relatorios.ferramentas')">
                         Relatórios
-                    </x-nav-link>
+                    </x-nav-link> --}}
 
                     <!-- Veículos Dropdown -->
                     <x-dropdown align="left" width="72">

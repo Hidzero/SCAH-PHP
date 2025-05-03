@@ -66,8 +66,6 @@
                             </button>
                         </x-slot>
                         <x-slot name="content">
-                            <x-dropdown-link :href="route('manutencao.atendimento_os.index')">Atendimento de OS</x-dropdown-link>
-                            <x-dropdown-link :href="route('manutencao.ordem_servico.index')">Ordem de Serviço</x-dropdown-link>
                             <x-dropdown-link :href="route('manutencao.gestao_manutencao.index')">Gestão de Manutenção</x-dropdown-link>
                             <x-dropdown-link :href="route('manutencao.consulta_manuales.index')">Consulta de Manuais</x-dropdown-link>
                         </x-slot>
@@ -95,10 +93,10 @@
                         </x-slot>
                     </x-dropdown>
 
-                    <!-- Consulta -->
+                    {{-- <!-- Consulta -->
                     <x-nav-link :href="route('consulta.gpt')" :active="request()->routeIs('consulta.gpt')">
                         Consulta
-                    </x-nav-link>
+                    </x-nav-link> --}}
                 </div>
             </div>
             <!-- Lado direito (Dropdown de usuário) -->
@@ -166,8 +164,6 @@
 
             <!-- Seção Manutenção -->
             <div class="px-3 text-gray-900 uppercase text-xs font-bold">Manutenção</div>
-            <x-responsive-nav-link :href="route('manutencao.atendimento_os.index')">Atendimento de OS</x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('manutencao.ordem_servico.index')">Ordem de Serviço</x-responsive-nav-link>
             <x-responsive-nav-link :href="route('manutencao.gestao_manutencao.index')">Gestão de Manutenção</x-responsive-nav-link>
             <x-responsive-nav-link :href="route('manutencao.consulta_manuales.index')">Consulta de Manuais</x-responsive-nav-link>
 
@@ -181,7 +177,7 @@
             <x-responsive-nav-link :href="route('veiculos.dashboard')">Dashboard de Veículos</x-responsive-nav-link>
 
             <!-- Link Consulta -->
-            <x-responsive-nav-link :href="route('consulta.gpt')">Consulta</x-responsive-nav-link>
+            {{-- <x-responsive-nav-link :href="route('consulta.gpt')">Consulta</x-responsive-nav-link> --}}
         </div>
 
         

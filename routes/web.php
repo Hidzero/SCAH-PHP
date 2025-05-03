@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ObraController;
 use App\Http\Controllers\EstoqueController;
+use App\Http\Controllers\GraficoController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\VeiculoController;
@@ -39,9 +40,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 
 
-    Route::get('/', function () {
-        return view('dashboard');
-    })->middleware(['auth', 'verified'])->name('dashboard');
+    Route::get('/', [GraficoController::class, 'index'])->name('dashboard');
 
     // Rotas de Cadastro (você pode usar resource para facilitar)
     Route::resource('ferramentas', FerramentaController::class);

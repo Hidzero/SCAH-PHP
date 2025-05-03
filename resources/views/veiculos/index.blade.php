@@ -1,186 +1,200 @@
 <x-app-layout>
-    @if (session('success'))
-        <x-message type="success">
-            {{ session('success') }}
-        </x-message>
-    @endif
-
-    @if (session('error'))
-        <x-message type="error">
-            {{ session('error') }}
-        </x-message>
-    @endif
-
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Veículos') }}
-        </h2>
+      <h2 class="text-2xl font-semibold text-gray-900">
+        {{ __('Veículos') }}
+      </h2>
     </x-slot>
-
-    <div class="py-12">
-        <div class="container-lg px-4">
-            <!-- Card de Cadastro -->
-            <div class="card mb-4">
-                <div class="card-header">
-                    Cadastrar Veículo
-                </div>
-                <div class="card-body">
-                    <form action="{{ route('veiculo.store') }}" method="POST">
-                        @csrf
-                        <div class="mb-3">
-                            <label for="nome" class="form-label">Nome do Ativo</label>
-                            <input type="text" class="form-control" id="nome" name="nome"
-                                placeholder="Digite o nome do ativo" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="tipo" class="form-label">Tipo do Ativo</label>
-                            <select class="form-control" id="tipo" name="tipo" required>
-                                <option value="Carro">Carro</option>
-                                <option value="Caminhão">Caminhão</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="marca" class="form-label">Marca</label>
-                            <input type="text" class="form-control" id="marca" name="marca"
-                                placeholder="Digite a marca do veículo" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="modelo" class="form-label">Modelo</label>
-                            <input type="text" class="form-control" id="modelo" name="modelo"
-                                placeholder="Digite o modelo do veículo" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="placa" class="form-label">Placa</label>
-                            <input type="text" class="form-control" id="placa" name="placa"
-                                placeholder="Digite a placa do veículo" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="km_atual" class="form-label">KM Atual</label>
-                            <input type="number" class="form-control" id="km_atual" name="km_atual"
-                                placeholder="Digite a quilometragem atual" required>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Cadastrar</button>
-                    </form>
-                </div>
+  
+    <div class="py-8">
+      <div class="container mx-auto px-4 space-y-8">
+  
+        <!-- Card de Cadastro -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+          <h3 class="text-xl font-medium text-gray-700 mb-4">Cadastrar Novo Veículo</h3>
+          <form action="{{ route('veiculo.store') }}" method="POST" class="space-y-4">
+            @csrf
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div>
+                <label for="nome" class="block text-sm font-medium text-gray-600">Nome do Ativo</label>
+                <input
+                  type="text" id="nome" name="nome" required
+                  class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                  placeholder="Ex: Caminhão Branco"
+                />
+              </div>
+              <div>
+                <label for="tipo" class="block text-sm font-medium text-gray-600">Tipo do Ativo</label>
+                <select
+                  id="tipo" name="tipo" required
+                  class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                >
+                  <option value="Carro">Carro</option>
+                  <option value="Caminhão">Caminhão</option>
+                </select>
+              </div>
+              <div>
+                <label for="marca" class="block text-sm font-medium text-gray-600">Marca</label>
+                <input
+                  type="text" id="marca" name="marca" required
+                  class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                  placeholder="Ex: Volvo"
+                />
+              </div>
+              <div>
+                <label for="modelo" class="block text-sm font-medium text-gray-600">Modelo</label>
+                <input
+                  type="text" id="modelo" name="modelo" required
+                  class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                  placeholder="Ex: FH 540"
+                />
+              </div>
+              <div>
+                <label for="placa" class="block text-sm font-medium text-gray-600">Placa</label>
+                <input
+                  type="text" id="placa" name="placa" required
+                  class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                  placeholder="ABC-1234"
+                />
+              </div>
+              <div>
+                <label for="km_atual" class="block text-sm font-medium text-gray-600">KM Atual</label>
+                <input
+                  type="number" id="km_atual" name="km_atual" required
+                  class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                  placeholder="0"
+                />
+              </div>
             </div>
-
-            <!-- Card de Listagem -->
-            <div class="card">
-                <div class="card-header">
-                    Veículos Cadastrados
-                </div>
-                <div class="card-body">
-                    @if($veiculos->count())
-                        <div class="table-responsive">
-                            <table class="table table-bordered table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>Nome</th>
-                                        <th>Tipo</th>
-                                        <th>Modelo</th>
-                                        <th>Marca</th>
-                                        <th>Placa</th>
-                                        <th>KM Atual</th>
-                                        <th>Ações</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach($veiculos as $veiculo)
-                                        <!-- Linha de visualização -->
-                                        <tr id="view-row-{{ $veiculo->id }}">
-                                            <td>{{ $veiculo->id }}</td>
-                                            <td>{{ $veiculo->nome }}</td>
-                                            <td>{{ $veiculo->tipo }}</td>
-                                            <td>{{ $veiculo->marca }}</td>
-                                            <td>{{ $veiculo->modelo }}</td>
-                                            <td>{{ $veiculo->placa }}</td>
-                                            <td>{{ number_format($veiculo->km_atual, 0, ',', '.') }} km</td>
-                                            <td>
-                                                <div class="d-flex gap-1">
-                                                    <button type="button" class="btn btn-warning btn-sm"
-                                                        onclick="showEditForm({{ $veiculo->id }})">
-                                                        Editar
-                                                    </button>
-                                                    <form action="{{ route('veiculo.destroy', $veiculo->id) }}"
-                                                        method="POST" class="d-inline-flex flex-fill">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="btn btn-danger btn-sm"
-                                                            onclick="return confirm('Tem certeza que deseja excluir este veículo?')">
-                                                            Deletar
-                                                        </button>
-                                                    </form>
-                                                </div>
-                                            </td>
-                                        </tr>
-
-                                        <!-- Linha de edição (inicialmente oculta) -->
-                                        <tr id="edit-row-{{ $veiculo->id }}" style="display: none;">
-                                            <td>{{ $veiculo->id }}</td>
-                                            <td>
-                                                <form action="{{ route('veiculo.update', $veiculo->id) }}" method="POST"
-                                                    id="edit-form-{{ $veiculo->id }}">
-                                                    @csrf
-                                                    @method('PUT')
-                                                    <input type="text" name="nome" class="form-control"
-                                                        value="{{ $veiculo->nome }}">
-                                            </td>
-                                            <td>
-                                                <select name="tipo" class="form-control">
-                                                    <option value="Carro" {{ $veiculo->tipo == 'Carro' ? 'selected' : '' }}>Carro</option>
-                                                    <option value="Caminhão" {{ $veiculo->tipo == 'Caminhão' ? 'selected' : '' }}>Caminhão</option>
-                                                </select>
-                                            </td>
-                                            <td>
-                                                <input type="text" name="modelo" class="form-control"
-                                                    value="{{ $veiculo->modelo }}">
-                                            </td>
-                                            <td>
-                                                <input type="text" name="marca" class="form-control"
-                                                    value="{{ $veiculo->marca }}">
-                                            </td>
-                                            <td>
-                                                <input type="text" name="placa" class="form-control"
-                                                    value="{{ $veiculo->placa }}">
-                                            </td>
-                                            <td>
-                                                <input type="number" name="km_atual" class="form-control"
-                                                    value="{{ $veiculo->km_atual }}">
-                                            </td>
-                                            <td>
-                                                <div class="d-flex gap-1">
-                                                    <button type="submit" class="btn btn-success btn-sm">Salvar</button>
-                                                    <button type="button" class="btn btn-secondary btn-sm"
-                                                        onclick="cancelEdit({{ $veiculo->id }})">
-                                                        Cancelar
-                                                    </button>
-                                                </div>
-                                                </form>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    @else
-                        <p class="mb-0">Nenhum veículo cadastrado.</p>
-                    @endif
-                </div>
+            <div class="text-right">
+              <button
+                type="submit"
+                class="inline-flex items-center px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 transition"
+              >
+                Cadastrar
+              </button>
             </div>
+          </form>
         </div>
+  
+        <!-- Card de Listagem -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+          <h3 class="text-xl font-medium text-gray-700 mb-4">Veículos Cadastrados</h3>
+          @if($veiculos->count())
+            <div class="overflow-x-auto">
+              <table class="min-w-full divide-y divide-gray-200 table-auto">
+                <thead class="bg-gray-50">
+                  <tr>
+                    <th class="px-4 py-2 text-left text-xs font-semibold text-gray-500 uppercase">ID</th>
+                    <th class="px-4 py-2 text-left text-xs font-semibold text-gray-500 uppercase">Nome</th>
+                    <th class="px-4 py-2 text-left text-xs font-semibold text-gray-500 uppercase">Tipo</th>
+                    <th class="px-4 py-2 text-left text-xs font-semibold text-gray-500 uppercase">Marca</th>
+                    <th class="px-4 py-2 text-left text-xs font-semibold text-gray-500 uppercase">Modelo</th>
+                    <th class="px-4 py-2 text-left text-xs font-semibold text-gray-500 uppercase">Placa</th>
+                    <th class="px-4 py-2 text-left text-xs font-semibold text-gray-500 uppercase">KM Atual</th>
+                    <th class="px-4 py-2 text-center text-xs font-semibold text-gray-500 uppercase">Ações</th>
+                  </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                  @foreach($veiculos as $veiculo)
+                    <tr class="hover:bg-gray-50" id="view-row-{{ $veiculo->id }}">
+                      <td class="px-4 py-2 text-sm text-gray-700">{{ $veiculo->id }}</td>
+                      <td class="px-4 py-2 text-sm text-gray-700">{{ $veiculo->nome }}</td>
+                      <td class="px-4 py-2 text-sm text-gray-700">{{ $veiculo->tipo }}</td>
+                      <td class="px-4 py-2 text-sm text-gray-700">{{ $veiculo->marca }}</td>
+                      <td class="px-4 py-2 text-sm text-gray-700">{{ $veiculo->modelo }}</td>
+                      <td class="px-4 py-2 text-sm text-gray-700">{{ $veiculo->placa }}</td>
+                      <td class="px-4 py-2 text-sm text-gray-700">{{ number_format($veiculo->km_atual,0,',','.') }} km</td>
+                      <td class="px-4 py-2 text-sm text-gray-700 text-center space-x-2">
+                        <button
+                          type="button"
+                          class="inline-flex px-2 py-1 bg-amber-500 text-white text-xs font-medium rounded hover:bg-amber-600 transition"
+                          onclick="showEditForm({{ $veiculo->id }})"
+                        >Editar</button>
+                        <form action="{{ route('veiculo.destroy',$veiculo->id) }}" method="POST" class="inline">
+                          @csrf @method('DELETE')
+                          <button
+                            type="submit"
+                            class="inline-flex px-2 py-1 bg-red-600 text-white text-xs font-medium rounded hover:bg-red-700 transition"
+                            onclick="return confirm('Deseja excluir este veículo?')"
+                          >Excluir</button>
+                        </form>
+                      </td>
+                    </tr>
+                    <tr id="edit-row-{{ $veiculo->id }}" class="hidden bg-gray-50">
+                      <td class="px-4 py-2 text-sm text-gray-700">{{ $veiculo->id }}</td>
+                      <form action="{{ route('veiculo.update',$veiculo->id) }}" method="POST" class="w-full">
+                        @csrf @method('PUT')
+                        <td class="px-4 py-2 text-sm">
+                          <input
+                            type="text" name="nome" value="{{ $veiculo->nome }}"
+                            class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm"
+                          />
+                        </td>
+                        <td class="px-4 py-2 text-sm">
+                          <select
+                            name="tipo"
+                            class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm"
+                          >
+                            <option value="Carro" {{ $veiculo->tipo==='Carro'? 'selected':'' }}>Carro</option>
+                            <option value="Caminhão" {{ $veiculo->tipo==='Caminhão'? 'selected':'' }}>Caminhão</option>
+                          </select>
+                        </td>
+                        <td class="px-4 py-2 text-sm">
+                          <input
+                            type="text" name="marca" value="{{ $veiculo->marca }}"
+                            class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm"
+                          />
+                        </td>
+                        <td class="px-4 py-2 text-sm">
+                          <input
+                            type="text" name="modelo" value="{{ $veiculo->modelo }}"
+                            class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm"
+                          />
+                        </td>
+                        <td class="px-4 py-2 text-sm">
+                          <input
+                            type="text" name="placa" value="{{ $veiculo->placa }}"
+                            class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm"
+                          />
+                        </td>
+                        <td class="px-4 py-2 text-sm">
+                          <input
+                            type="number" name="km_atual" value="{{ $veiculo->km_atual }}"
+                            class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm"
+                          />
+                        </td>
+                        <td class="px-4 py-2 text-sm text-center space-x-2">
+                          <button
+                            type="submit"
+                            class="inline-flex px-2 py-1 bg-green-600 text-white text-xs font-medium rounded hover:bg-green-700 transition"
+                          >Salvar</button>
+                          <button
+                            type="button" onclick="cancelEdit({{ $veiculo->id }})"
+                            class="inline-flex px-2 py-1 bg-gray-200 text-gray-800 text-xs font-medium rounded hover:bg-gray-300 transition"
+                          >Cancelar</button>
+                        </td>
+                      </form>
+                    </tr>
+                  @endforeach
+                </tbody>
+              </table>
+            </div>
+          @else
+            <p class="text-center text-gray-500">Nenhum veículo cadastrado.</p>
+          @endif
+        </div>
+      </div>
     </div>
-
-    <!-- Scripts para alternar entre visualização e edição -->
+  
     <script>
-        function showEditForm(id) {
-            document.getElementById('view-row-' + id).style.display = 'none';
-            document.getElementById('edit-row-' + id).style.display = 'table-row';
-        }
-
-        function cancelEdit(id) {
-            document.getElementById('edit-row-' + id).style.display = 'none';
-            document.getElementById('view-row-' + id).style.display = 'table-row';
-        }
+      function showEditForm(id) {
+        document.getElementById('view-row-'+id).classList.add('hidden');
+        document.getElementById('edit-row-'+id).classList.remove('hidden');
+      }
+      function cancelEdit(id) {
+        document.getElementById('edit-row-'+id).classList.add('hidden');
+        document.getElementById('view-row-'+id).classList.remove('hidden');
+      }
     </script>
-</x-app-layout>
+  </x-app-layout>
+  

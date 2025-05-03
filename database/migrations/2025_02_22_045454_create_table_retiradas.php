@@ -14,13 +14,12 @@ return new class extends Migration
         Schema::create('retiradas', function (Blueprint $table) {
             $table->id();
             $table->foreignId('ferramenta_id')->constrained('ferramentas')->onDelete('cascade');
-            $table->string('descricao');
-            $table->string('numero_serie');
-            $table->string('responsavel');
+            $table->foreignId('responsavel_id')->constrained('users')->onDelete('cascade');
             $table->date('previsao_retorno');
             $table->boolean('uso_interno')->default(false);
             $table->foreignId('obra_id')->nullable()->constrained('obras')->onDelete('set null');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

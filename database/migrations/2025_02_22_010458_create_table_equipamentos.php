@@ -15,6 +15,7 @@ return new class extends Migration {
             $table->string('nome');
             $table->string('tipo');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

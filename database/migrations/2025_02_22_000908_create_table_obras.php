@@ -18,6 +18,7 @@ return new class extends Migration
             $table->date('inicio_obra');
             $table->date('fim_obra')->nullable(); // Caso a obra ainda esteja em andamento
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

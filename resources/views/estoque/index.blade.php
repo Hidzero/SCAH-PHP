@@ -1,175 +1,161 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Gestão de Estoque') }}
-        </h2>
-    </x-slot>
+  <x-slot name="header">
+    <h1 class="text-2xl font-semibold text-gray-900">
+      {{ __('Gestão de Estoque') }}
+    </h1>
+  </x-slot>
 
-    <div class="py-12">
-        <div class="container-lg px-4">
-            <div class="card">
-                <div class="card-header">
-                    Gestão de Estoque
-                </div>
-                <div class="card-body">
-                    <!-- Navegação entre abas -->
-                    <ul class="nav nav-tabs" id="estoqueTabs" role="tablist">
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link active" id="estoque-tab" data-bs-toggle="tab" data-bs-target="#estoque" type="button" role="tab">Estoque</button>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="retiradas-tab" data-bs-toggle="tab" data-bs-target="#retiradas" type="button" role="tab">Retiradas</button>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="manutencao-tab" data-bs-toggle="tab" data-bs-target="#manutencao" type="button" role="tab">Manutenção</button>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="reparadas-tab" data-bs-toggle="tab" data-bs-target="#reparadas" type="button" role="tab">Reparadas</button>
-                        </li>
-                    </ul>
+  <div class="py-10 container mx-auto px-4" x-data="{ activeTab: 'estoque' }">
+    <div class="bg-white rounded-lg shadow">
+      <div class="px-6 py-4 border-b">
+        <ul class="flex space-x-6">
+          <li>
+            <button
+              @click.prevent="activeTab = 'estoque'"
+              :class="activeTab === 'estoque' ? 'border-b-2 border-indigo-600 text-indigo-600' : 'text-gray-600'"
+              class="pb-2 font-medium focus:outline-none"
+            >Estoque</button>
+          </li>
+          <li>
+            <button
+              @click.prevent="activeTab = 'retiradas'"
+              :class="activeTab === 'retiradas' ? 'border-b-2 border-indigo-600 text-indigo-600' : 'text-gray-600'"
+              class="pb-2 font-medium focus:outline-none"
+            >Retiradas</button>
+          </li>
+          <li>
+            <button
+              @click.prevent="activeTab = 'manutencao'"
+              :class="activeTab === 'manutencao' ? 'border-b-2 border-indigo-600 text-indigo-600' : 'text-gray-600'"
+              class="pb-2 font-medium focus:outline-none"
+            >Manutenção</button>
+          </li>
+          <li>
+            <button
+              @click.prevent="activeTab = 'reparadas'"
+              :class="activeTab === 'reparadas' ? 'border-b-2 border-indigo-600 text-indigo-600' : 'text-gray-600'"
+              class="pb-2 font-medium focus:outline-none"
+            >Reparadas</button>
+          </li>
+        </ul>
+      </div>
 
-                    <div class="tab-content mt-3" id="estoqueTabsContent">
-                        <!-- Aba Estoque -->
-                        <div class="tab-pane fade show active" id="estoque" role="tabpanel">
-                            <div class="table-responsive">
-                                <table class="table table-bordered table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th>ID</th>
-                                            <th>Nome</th>
-                                            <th>Quantidade</th>
-                                            <th>Categoria</th>
-                                            <th>Ações</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @if(isset($estoque) && count($estoque))
-                                            @foreach($estoque as $item)
-                                                <tr>
-                                                    <td>{{ $item->id }}</td>
-                                                    <td>{{ $item->nome }}</td>
-                                                    <td>{{ $item->quantidade }}</td>
-                                                    <td>{{ $item->categoria }}</td>
-                                                    <td>
-                                                        <a href="#" class="btn btn-primary btn-sm">Detalhes</a>
-                                                    </td>
-                                                </tr>
-                                            @endforeach
-                                        @else
-                                            <tr>
-                                                <td colspan="5" class="text-center">Nenhum item em estoque.</td>
-                                            </tr>
-                                        @endif
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-
-                        <!-- Aba Retiradas -->
-                        <div class="tab-pane fade" id="retiradas" role="tabpanel">
-                            <div class="table-responsive">
-                                <table class="table table-bordered table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th>ID</th>
-                                            <th>Item</th>
-                                            <th>Quantidade</th>
-                                            <th>Retirado por</th>
-                                            <th>Data</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @if(isset($retiradas) && count($retiradas))
-                                            @foreach($retiradas as $retirada)
-                                                <tr>
-                                                    <td>{{ $retirada->id }}</td>
-                                                    <td>{{ $retirada->nome }}</td>
-                                                    <td>{{ $retirada->quantidade }}</td>
-                                                    <td>{{ $retirada->name }}</td>
-                                                    <td>{{ \Carbon\Carbon::parse($retirada->data_retirada)->format('d/m/Y H:i') }}</td>
-                                                </tr>
-                                            @endforeach
-                                        @else
-                                            <tr>
-                                                <td colspan="5" class="text-center">Nenhuma retirada registrada.</td>
-                                            </tr>
-                                        @endif
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-
-                        <!-- Aba Manutenção -->
-                        <div class="tab-pane fade" id="manutencao" role="tabpanel">
-                            <div class="table-responsive">
-                                <table class="table table-bordered table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th>ID</th>
-                                            <th>Item</th>
-                                            <th>Motivo</th>
-                                            <th>Data de Envio</th>
-                                            <th>Status</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @if(isset($manutencoes) && count($manutencoes))
-                                            @foreach($manutencoes as $manutencao)
-                                                <tr>
-                                                    <td>{{ $manutencao->id }}</td>
-                                                    <td>{{ $manutencao->nome }}</td>
-                                                    <td>{{ $manutencao->motivo }}</td>
-                                                    <td>{{ \Carbon\Carbon::parse($manutencao->data_envio)->format('d/m/Y') }}</td>
-                                                    <td>{{ ucfirst($manutencao->status) }}</td>
-                                                </tr>
-                                            @endforeach
-                                        @else
-                                            <tr>
-                                                <td colspan="5" class="text-center">Nenhuma manutenção em andamento.</td>
-                                            </tr>
-                                        @endif
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-
-                        <!-- Aba Reparadas -->
-                        <div class="tab-pane fade" id="reparadas" role="tabpanel">
-                            <div class="table-responsive">
-                                <table class="table table-bordered table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th>ID</th>
-                                            <th>Item</th>
-                                            <th>Data de Conclusão</th>
-                                            <th>Observação</th>
-                                            <th>Status</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @if(isset($reparadas) && count($reparadas))
-                                            @foreach($reparadas as $reparada)
-                                                <tr>
-                                                    <td>{{ $reparada->id }}</td>
-                                                    <td>{{ $reparada->nome }}</td>
-                                                    <td>{{ \Carbon\Carbon::parse($reparada->data_conclusao)->format('d/m/Y') }}</td>
-                                                    <td>{{ $reparada->observacao }}</td>
-                                                    <td><span class="badge bg-success">Reparado</span></td>
-                                                </tr>
-                                            @endforeach
-                                        @else
-                                            <tr>
-                                                <td colspan="5" class="text-center">Nenhuma peça reparada.</td>
-                                            </tr>
-                                        @endif
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
+      <div class="p-6">
+        <!-- Estoque Tab -->
+        <div x-show="activeTab === 'estoque'">
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm text-left text-gray-700">
+              <thead class="bg-gray-100">
+                <tr>
+                  <th class="px-4 py-2">Nome</th>
+                  <th class="px-4 py-2">Número de Série</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y">
+                @forelse($estoque as $item)
+                  <tr class="hover:bg-gray-50">
+                    <td class="px-4 py-2">{{ $item->nome }}</td>
+                    <td class="px-4 py-2">{{ $item->numero_serie }}</td>
+                  </tr>
+                @empty
+                  <tr>
+                    <td colspan="2" class="px-4 py-2 text-center">Nenhum item em estoque.</td>
+                  </tr>
+                @endforelse
+              </tbody>
+            </table>
+          </div>
         </div>
+
+        <!-- Retiradas Tab -->
+        <div x-show="activeTab === 'retiradas'">
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm text-left text-gray-700">
+              <thead class="bg-gray-100">
+                <tr>
+                  <th class="px-4 py-2">Item</th>
+                  <th class="px-4 py-2">Retirado por</th>
+                  <th class="px-4 py-2">Usando em</th>
+                  <th class="px-4 py-2">Data</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y">
+                @forelse($retiradas as $r)
+                  <tr class="hover:bg-gray-50">
+                    <td class="px-4 py-2">{{ $r->ferramenta->nome }}</td>
+                    <td class="px-4 py-2">{{ $r->responsavel->name }}</td>
+                    <td class="px-4 py-2">{{ $r->obra_id ? $r->obra->cliente : 'Uso Interno' }}</td>
+                    <td class="px-4 py-2">{{ $r->created_at->format('d/m/Y H:i') }}</td>
+                  </tr>
+                @empty
+                  <tr>
+                    <td colspan="4" class="px-4 py-2 text-center">Nenhuma retirada registrada.</td>
+                  </tr>
+                @endforelse
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Manutenção Tab -->
+        <div x-show="activeTab === 'manutencao'">
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm text-left text-gray-700">
+              <thead class="bg-gray-100">
+                <tr>
+                  <th class="px-4 py-2">Item</th>
+                  <th class="px-4 py-2">Descrição</th>
+                  <th class="px-4 py-2">Data Retorno</th>
+                  <th class="px-4 py-2">Status</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y">
+                @forelse($manutencoes as $m)
+                  <tr class="hover:bg-gray-50">
+                    <td class="px-4 py-2">{{ optional($m->retirada->ferramenta)->nome }}</td>
+                    <td class="px-4 py-2">{{ $m->descricao }}</td>
+                    <td class="px-4 py-2">{{ $m->data_retorno->format('d/m/Y') }}</td>
+                    <td class="px-4 py-2">{{ ucfirst($m->status) }}</td>
+                  </tr>
+                @empty
+                  <tr>
+                    <td colspan="4" class="px-4 py-2 text-center">Nenhuma manutenção em andamento.</td>
+                  </tr>
+                @endforelse
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Reparadas Tab -->
+        <div x-show="activeTab === 'reparadas'">
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm text-left text-gray-700">
+              <thead class="bg-gray-100">
+                <tr>
+                  <th class="px-4 py-2">Item</th>
+                  <th class="px-4 py-2">Descrição</th>
+                  <th class="px-4 py-2">Data Retorno</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y">
+                @forelse($reparadas as $m)
+                  <tr class="hover:bg-gray-50">
+                    <td class="px-4 py-2">{{ optional($m->retirada->ferramenta)->nome }}</td>
+                    <td class="px-4 py-2">{{ $m->descricao }}</td>
+                    <td class="px-4 py-2">{{ $m->data_retorno->format('d/m/Y') }}</td>
+                  </tr>
+                @empty
+                  <tr>
+                    <td colspan="3" class="px-4 py-2 text-center">Nenhuma peça reparada.</td>
+                  </tr>
+                @endforelse
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
     </div>
+  </div>
 </x-app-layout>

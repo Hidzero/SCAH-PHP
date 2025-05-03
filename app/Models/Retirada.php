@@ -4,25 +4,33 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Retirada extends Model
 {
     use HasFactory;
+    use SoftDeletes;
 
     protected $fillable = [
         'ferramenta_id',
-        'descricao',
-        'numero_serie',
-        'responsavel',
+        'responsavel_id',
         'previsao_retorno',
         'uso_interno',
         'obra_id',
+        'deleted_at',
     ];
 
+    protected $dates = ['deleted_at'];
+    
     // Relação com a ferramenta
     public function ferramenta()
     {
         return $this->belongsTo(Ferramenta::class);
+    }
+
+    public function responsavel()
+    {
+        return $this->belongsTo(User::class,'responsavel_id');
     }
 
     // Relação com a obra (caso tenha sido retirada para uma obra)

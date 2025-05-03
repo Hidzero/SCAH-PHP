@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ObraController;
 use App\Http\Controllers\EstoqueController;
+use App\Http\Controllers\GraficoController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\VeiculoController;
@@ -37,11 +38,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     //   <a href="{{ route('admin.dashboard') }}">Acesso Administrativo</a>
     // @endif
 
-    
 
-    Route::get('/', function () {
-        return view('dashboard');
-    })->middleware(['auth', 'verified'])->name('dashboard');
+
+    Route::get('/', [GraficoController::class, 'index'])->name('dashboard');
 
     // Rotas de Cadastro (você pode usar resource para facilitar)
     Route::resource('ferramentas', FerramentaController::class);
@@ -55,34 +54,40 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::prefix('estoque')->name('estoque.')->group(function () {
         Route::get('visualizar', [EstoqueController::class, 'visualizar'])->name('visualizar');
         Route::get('retirar', [EstoqueController::class, 'retirar'])->name('retirar');
-        Route::get('devolucao', [EstoqueController::class, 'devolucao'])->name('devolucao');
         Route::post('retirar/store', [EstoqueController::class, 'store'])->name('store');
+        Route::get('devolucao', [EstoqueController::class, 'devolucao'])->name('devolucao');
+        Route::post('devolucao/store', [EstoqueController::class, 'storeDevolucao'])
+            ->name('devolucao.store');
+        Route::post('devolucao/defeito', [EstoqueController::class, 'storeDevolucaoDefeito'])
+            ->name('devolucao.defeito');
+
     });
 
     // Rotas de Manutenção
     Route::prefix('manutencao')->name('manutencao.')->group(function () {
         Route::get('atendimento-os', [ManutencaoController::class, 'atendimentoOs'])->name('atendimento_os.index');
         Route::get('ordem-servico', [ManutencaoController::class, 'ordemServico'])->name('ordem_servico.index');
-        Route::get('gestao', [ManutencaoController::class, 'gestao'])->name('gestao_manutencao.index');
+        Route::get('gestao', [ManutencaoController::class, 'index'])->name('gestao_manutencao.index');
+        Route::post('{id}/solicitar-peca', [ManutencaoController::class, 'solicitarPeca'])->name('solicitar');
+        Route::post('{id}/em-conserto',   [ManutencaoController::class, 'enviarConserto'])->name('conserto');
+        Route::post('{id}/condenar',      [ManutencaoController::class, 'condenar'])->name('condenar');
+        Route::post('{id}/voltar-aguardando', [ManutencaoController::class, 'voltarAguardando'])->name('voltar');
+        Route::post('{id}/voltar-estoque',    [ManutencaoController::class, 'voltarEstoque'])->name('voltar.estoque');    
         Route::get('consulta-manuais', [ManutencaoController::class, 'consultaManuais'])->name('consulta_manuales.index');
-    });
-
-    // Rota de Relatórios
-    Route::prefix('relatorios')->name('relatorios.')->group(function () {
-        Route::get('ferramentas', [RelatorioController::class, 'ferramentas'])->name('ferramentas');
     });
 
     // Rotas de Veículos
     Route::prefix('veiculos')->name('veiculos.')->group(function () {
-        Route::get('saida', [VeiculoController::class, 'saida'])->name('saida');
-        Route::get('retorno', [VeiculoController::class, 'retorno'])->name('retorno');
-        // Use um nome que não conflite com a rota 'home'
-        Route::get('dashboard', [VeiculoController::class, 'dashboard'])->name('dashboard_veiculos');
+        Route::get('saida', [VeiculoController::class, 'indexSaida'])->name('saida');
+        Route::post('saida/store', [VeiculoController::class, 'storeSaida'])->name('saida.store');
+        Route::get('retorno', [VeiculoController::class, 'indexRetorno'])->name('retorno');
+        Route::post('retorno/store', [VeiculoController::class, 'storeRetorno'])->name('retorno.store');
+        Route::get('dashboard', [VeiculoController::class, 'dashboard'])->name('dashboard');
     });
 
     // Rota de Consulta
     Route::get('consulta/gpt', [ConsultaController::class, 'gpt'])->name('consulta.gpt');
-    
+
     Route::middleware('auth')->group(function () {
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -90,4 +95,4 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

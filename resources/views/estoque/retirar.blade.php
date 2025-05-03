@@ -1,104 +1,88 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Retirada de Ferramenta') }}
-        </h2>
+      <h2 class="text-2xl font-semibold text-gray-900">{{ __('Retirada de Ferramenta') }}</h2>
     </x-slot>
-
-    <div class="py-12">
-        <div class="container-lg px-4">
-            <div class="card">
-                <div class="card-header">
-                    Retirada de Ferramenta
-                </div>
-                <div class="card-body">
-                    <form action="{{ route('estoque.store') }}" method="POST">
-                        @csrf
-
-                        <!-- Ferramenta -->
-                        <div class="mb-3">
-                            <label for="ferramenta" class="form-label">Ferramenta</label>
-                            <select class="form-select" id="ferramenta" name="ferramenta_id" required>
-                                <option value="" disabled selected>Selecione uma ferramenta</option>
-                                @foreach($ferramentas as $ferramenta)
-                                    <option value="{{ $ferramenta->id }}"
-                                        data-descricao="{{ $ferramenta->descricao }}"
-                                        data-numero="{{ $ferramenta->numero_serie }}">
-                                        {{ $ferramenta->nome }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-
-                        <!-- Descrição -->
-                        <div class="mb-3">
-                            <label for="descricao" class="form-label">Descrição</label>
-                            <input type="text" class="form-control" id="descricao" name="descricao" readonly>
-                        </div>
-
-                        <!-- Número de Série -->
-                        <div class="mb-3">
-                            <label for="numero_serie" class="form-label">Número de Série</label>
-                            <input type="text" class="form-control" id="numero_serie" name="numero_serie" readonly>
-                        </div>
-
-                        <!-- Responsável pela Retirada -->
-                        <div class="mb-3">
-                            <label for="responsavel" class="form-label">Responsável pela Retirada</label>
-                            <input type="text" class="form-control" id="responsavel" name="responsavel"
-                                value="{{ auth()->user()->name }}" required>
-                        </div>
-
-                        <!-- Previsão de Retorno -->
-                        <div class="mb-3">
-                            <label for="previsao_retorno" class="form-label">Previsão de Retorno</label>
-                            <input type="date" class="form-control" id="previsao_retorno" name="previsao_retorno" required>
-                        </div>
-
-                        <!-- Checkbox de Uso Interno -->
-                        <div class="form-check mb-3">
-                            <input class="form-check-input" type="checkbox" id="uso_interno" name="uso_interno">
-                            <label class="form-check-label" for="uso_interno">Uso Interno</label>
-                        </div>
-
-                        <!-- Obra -->
-                        <div class="mb-3">
-                            <label for="obra" class="form-label">Obra</label>
-                            <select class="form-select" id="obra" name="obra_id">
-                                <option value="" disabled selected>Selecione uma obra</option>
-                                @foreach($obras as $obra)
-                                    <option value="{{ $obra->id }}">{{ $obra->cliente }} - {{ $obra->endereco }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-
-                        <button type="submit" class="btn btn-primary">Registrar Retirada</button>
-                    </form>
-                </div>
-            </div>
+  
+    <div class="py-10 container mx-auto px-4">
+      <div class="bg-white shadow rounded-lg overflow-hidden">
+        <div class="px-6 py-4 border-b">
+          <h3 class="text-lg font-medium text-gray-800">Registrar Retirada</h3>
         </div>
+        <form action="{{ route('estoque.store') }}" method="POST" class="px-6 py-6 space-y-6">
+          @csrf
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Ferramenta -->
+            <div>
+              <label for="ferramenta" class="block text-sm font-medium text-gray-700">Ferramenta</label>
+              <select id="ferramenta" name="ferramenta_id" required
+                      class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                <option value="" disabled selected>Selecione...</option>
+                @foreach($ferramentas as $f)
+                  <option value="{{ $f->id }}">{{ $f->nome }}</option>
+                @endforeach
+              </select>
+            </div>
+            <!-- Responsável -->
+            <div>
+              <label for="responsavel" class="block text-sm font-medium text-gray-700">Responsável</label>
+              <select id="responsavel" name="responsavel" required
+                      class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                <option value="" disabled selected>Selecione...</option>
+                @foreach($responsaveis as $r)
+                  <option value="{{ $r->id }}">{{ $r->name }}</option>
+                @endforeach
+              </select>
+            </div>
+            <!-- Previsão Retorno -->
+            <div>
+              <label for="previsao_retorno" class="block text-sm font-medium text-gray-700">Previsão de Retorno</label>
+              <input type="date" id="previsao_retorno" name="previsao_retorno" required
+                     class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
+            </div>
+          </div>
+  
+          <div class="flex items-center space-x-4">
+            <div class="flex items-center">
+              <input id="uso_interno" name="uso_interno" type="checkbox"
+                     class="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500" />
+              <label for="uso_interno" class="ml-2 block text-sm text-gray-700">Uso Interno</label>
+            </div>
+            <div class="flex-1">
+              <label for="obra" class="block text-sm font-medium text-gray-700">Obra (opcional)</label>
+              <select id="obra" name="obra_id" disabled
+                      class="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 cursor-not-allowed focus:ring-indigo-500 focus:border-indigo-500">
+                <option value="" selected>Selecione...</option>
+                @foreach($obras as $obra)
+                  <option value="{{ $obra->id }}">{{ $obra->cliente }} - {{ $obra->endereco }}</option>
+                @endforeach
+              </select>
+            </div>
+          </div>
+  
+          <div class="text-right">
+            <button type="submit"
+                    class="inline-flex items-center px-6 py-2 bg-indigo-600 text-white font-medium rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+              Registrar
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
-
-    <!-- Script para preencher os campos e desativar obra -->
+  
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const ferramentaSelect = document.getElementById("ferramenta");
-            const descricaoInput = document.getElementById("descricao");
-            const numeroSerieInput = document.getElementById("numero_serie");
-            const usoInternoCheckbox = document.getElementById("uso_interno");
-            const obraSelect = document.getElementById("obra");
-
-            // Preencher descrição e número de série ao selecionar ferramenta
-            ferramentaSelect.addEventListener("change", function () {
-                const selectedOption = ferramentaSelect.options[ferramentaSelect.selectedIndex];
-                descricaoInput.value = selectedOption.getAttribute("data-descricao");
-                numeroSerieInput.value = selectedOption.getAttribute("data-numero");
-            });
-
-            // Desativar obra se uso interno estiver marcado
-            usoInternoCheckbox.addEventListener("change", function () {
-                obraSelect.disabled = this.checked;
-            });
+      document.addEventListener('DOMContentLoaded', ()=>{
+        const checkbox = document.getElementById('uso_interno');
+        const obraSelect = document.getElementById('obra');
+        checkbox.addEventListener('change', ()=>{
+          if(checkbox.checked) {
+            obraSelect.disabled = true;
+            obraSelect.classList.add('bg-gray-100','cursor-not-allowed');
+          } else {
+            obraSelect.disabled = false;
+            obraSelect.classList.remove('bg-gray-100','cursor-not-allowed');
+          }
         });
+      });
     </script>
-</x-app-layout>
+  </x-app-layout>
+  

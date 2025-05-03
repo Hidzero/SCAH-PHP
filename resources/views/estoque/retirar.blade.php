@@ -1,110 +1,88 @@
 <x-app-layout>
-    @if (session('success'))
-        <x-message type="success">
-            {{ session('success') }}
-        </x-message>
-    @endif
-
-    @if (session('error'))
-        <x-message type="error">
-            {{ session('error') }}
-        </x-message>
-    @endif
-
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Retirada de Ferramenta') }}
-        </h2>
+      <h2 class="text-2xl font-semibold text-gray-900">{{ __('Retirada de Ferramenta') }}</h2>
     </x-slot>
-
-    <div class="py-12">
-        <div class="container-lg px-4">
-            <div class="card">
-                <div class="card-header">
-                    Retirada de Ferramenta
-                </div>
-                <div class="card-body">
-                    <form action="{{ route('estoque.store') }}" method="POST">
-                        @csrf
-
-                        <div class="row form p-3">
-                            <!-- Ferramenta -->
-                            <div class="col-sm-4">
-                                <label for="ferramenta" class="form-label">Ferramenta</label>
-                                <select class="form-select" id="ferramenta" name="ferramenta_id" required>
-                                    <option value="" selected>Selecione uma ferramenta</option>
-                                    @foreach($ferramentas as $ferramenta)
-                                        <option value="{{ $ferramenta->id }}">
-                                            {{ $ferramenta->nome }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-
-                            <!-- Responsável pela Retirada -->
-                            <div class="col-sm-4">
-                                <label for="responsavel" class="form-label">Responsável pela Retirada</label>
-                                <select type="text" class="form-control" id="responsavel" name="responsavel" value=""
-                                    required>
-                                    <option value="" selected>Selecione um responsavel</option>
-                                    @foreach ($responsaveis as $responsavel)
-                                        <option value="{{ $responsavel->id }}">{{ $responsavel->name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-
-                            <!-- Previsão de Retorno -->
-                            <div class="col-sm-4">
-                                <label for="previsao_retorno" class="form-label">Previsão de Retorno</label>
-                                <input type="date" class="form-control" id="previsao_retorno" name="previsao_retorno"
-                                    required>
-                            </div>
-                        </div>
-                        <div class="row p-3">
-                            <!-- Checkbox de Uso Interno -->
-                            <div class="col-md-2 d-flex align-items-center justify-content-center">
-                              <div class="form-check ">
-                                <input type="checkbox" class="form-check-input" id="uso_interno" name="uso_interno">
-                                <label class="form-check-label ms-2" for="uso_interno">Uso Interno</label>
-                              </div>
-                            </div>
-                          
-                            <!-- Obra -->
-                            <div class="col-md-10">
-                              <label for="obra" class="form-label">Obra</label>
-                              <select class="form-select" id="obra" name="obra_id">
-                                <option value="" selected>Selecione uma obra</option>
-                                @foreach($obras as $obra)
-                                    <option value="{{ $obra->id }}">{{ $obra->cliente }} - {{ $obra->endereco }}</option>
-                                @endforeach
-                            </select>                            
-                            </div>
-                        </div>
-                          
-                        <button type="submit" class="btn btn-primary">Registrar Retirada</button>
-                    </form>
-                </div>
-            </div>
+  
+    <div class="py-10 container mx-auto px-4">
+      <div class="bg-white shadow rounded-lg overflow-hidden">
+        <div class="px-6 py-4 border-b">
+          <h3 class="text-lg font-medium text-gray-800">Registrar Retirada</h3>
         </div>
+        <form action="{{ route('estoque.store') }}" method="POST" class="px-6 py-6 space-y-6">
+          @csrf
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Ferramenta -->
+            <div>
+              <label for="ferramenta" class="block text-sm font-medium text-gray-700">Ferramenta</label>
+              <select id="ferramenta" name="ferramenta_id" required
+                      class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                <option value="" disabled selected>Selecione...</option>
+                @foreach($ferramentas as $f)
+                  <option value="{{ $f->id }}">{{ $f->nome }}</option>
+                @endforeach
+              </select>
+            </div>
+            <!-- Responsável -->
+            <div>
+              <label for="responsavel" class="block text-sm font-medium text-gray-700">Responsável</label>
+              <select id="responsavel" name="responsavel" required
+                      class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                <option value="" disabled selected>Selecione...</option>
+                @foreach($responsaveis as $r)
+                  <option value="{{ $r->id }}">{{ $r->name }}</option>
+                @endforeach
+              </select>
+            </div>
+            <!-- Previsão Retorno -->
+            <div>
+              <label for="previsao_retorno" class="block text-sm font-medium text-gray-700">Previsão de Retorno</label>
+              <input type="date" id="previsao_retorno" name="previsao_retorno" required
+                     class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
+            </div>
+          </div>
+  
+          <div class="flex items-center space-x-4">
+            <div class="flex items-center">
+              <input id="uso_interno" name="uso_interno" type="checkbox"
+                     class="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500" />
+              <label for="uso_interno" class="ml-2 block text-sm text-gray-700">Uso Interno</label>
+            </div>
+            <div class="flex-1">
+              <label for="obra" class="block text-sm font-medium text-gray-700">Obra (opcional)</label>
+              <select id="obra" name="obra_id" disabled
+                      class="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 cursor-not-allowed focus:ring-indigo-500 focus:border-indigo-500">
+                <option value="" selected>Selecione...</option>
+                @foreach($obras as $obra)
+                  <option value="{{ $obra->id }}">{{ $obra->cliente }} - {{ $obra->endereco }}</option>
+                @endforeach
+              </select>
+            </div>
+          </div>
+  
+          <div class="text-right">
+            <button type="submit"
+                    class="inline-flex items-center px-6 py-2 bg-indigo-600 text-white font-medium rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+              Registrar
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
-
-    <!-- Script para preencher os campos e desativar obra -->
+  
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const usoInternoCheckbox = document.getElementById("uso_interno");
-            const obraSelect = document.getElementById("obra");
-
-            usoInternoCheckbox.addEventListener("change", function () {
-                if (this.checked) {
-                    // Impede interação, mas mantém o campo no formulário
-                    obraSelect.style.pointerEvents = "none";
-                    obraSelect.style.opacity = "0.5";
-                    obraSelect.value = ""; // limpa o valor
-                } else {
-                    obraSelect.style.pointerEvents = "auto";
-                    obraSelect.style.opacity = "1";
-                }
-            });
+      document.addEventListener('DOMContentLoaded', ()=>{
+        const checkbox = document.getElementById('uso_interno');
+        const obraSelect = document.getElementById('obra');
+        checkbox.addEventListener('change', ()=>{
+          if(checkbox.checked) {
+            obraSelect.disabled = true;
+            obraSelect.classList.add('bg-gray-100','cursor-not-allowed');
+          } else {
+            obraSelect.disabled = false;
+            obraSelect.classList.remove('bg-gray-100','cursor-not-allowed');
+          }
         });
+      });
     </script>
-</x-app-layout>
+  </x-app-layout>
+  

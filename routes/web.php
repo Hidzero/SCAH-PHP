@@ -14,6 +14,8 @@ use App\Http\Controllers\RelatorioController;
 use App\Http\Controllers\FerramentaController;
 use App\Http\Controllers\ManutencaoController;
 use App\Http\Controllers\EquipamentoController;
+use App\Http\Middleware\RoleMiddleware;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -25,7 +27,7 @@ use App\Http\Controllers\EquipamentoController;
 |
 */
 
-Route::middleware(['auth', 'verified'])->group(function () {
+Route::middleware(['auth', 'verified', RoleMiddleware::class])->group(function () {
 
     // Como bloquear rotas a partir da role de usuario que esta sendo pesquisada na model
 

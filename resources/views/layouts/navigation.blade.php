@@ -12,7 +12,7 @@
           {{-- Navegação desktop --}}
           <div class="hidden lg:flex items-center space-x-4">
             <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-              Dashboard
+              Gráficos
             </x-nav-link>
   
             {{-- Dropdown genérico componentizado para simplificar repetição --}}
@@ -113,7 +113,7 @@
     <div x-show="open" class="lg:hidden bg-white border-t border-gray-200 shadow-sm">
       <div class="pt-4 pb-2 space-y-1">
         <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-          Dashboard
+          Gráficos
         </x-responsive-nav-link>
   
         @foreach ([

@@ -118,7 +118,6 @@
             </button>
           </x-slot>
           <x-slot name="content">
-            <x-dropdown-link :href="route('profile.edit')">Perfil</x-dropdown-link>
             <form method="POST" action="{{ route('logout') }}">
               @csrf
               <x-dropdown-link :href="route('logout')"
@@ -188,7 +187,6 @@
       <div class="border-t border-gray-200 mt-4 pt-4 px-4">
         <div class="font-medium text-gray-800">{{ Auth::user()->name }}</div>
         <div class="text-sm text-gray-500 mb-2">{{ Auth::user()->email }}</div>
-        <x-responsive-nav-link :href="route('profile.edit')">Perfil</x-responsive-nav-link>
         <form method="POST" action="{{ route('logout') }}">
           @csrf
           <x-responsive-nav-link :href="route('logout')"

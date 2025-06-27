@@ -26,12 +26,10 @@
                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                 <option value="">{{ __('Selecione um veículo') }}</option>
                 @foreach($veiculos as $saida)
-          <option value="{{ $saida->id }}">
-            {{ $saida->veiculo->nome }}
-            — {{ $saida->veiculo->placa }}
-            ({{ $saida->motorista->nome }})
-          </option>
-        @endforeach
+                  <option value="{{ $saida->id }}" data-km="{{ $saida->veiculo->km_atual }}">
+                    {{ $saida->veiculo->nome }} — {{ $saida->veiculo->placa }} ({{ $saida->motorista->nome }})
+                  </option>
+                @endforeach
               </select>
             </div>
 
@@ -66,4 +64,27 @@
       </div>
     </div>
   </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const selectSaida = document.getElementById('saida_id');
+      const kmInput = document.getElementById('km_atual');
+
+      function updateKmMin() {
+        const option = selectSaida.options[selectSaida.selectedIndex];
+        const kmMin = option?.dataset.km || 0;
+        kmInput.min = kmMin;
+        // opcional: popular com valor mínimo se vazio ou menor
+        if (!kmInput.value || +kmInput.value < kmMin) {
+          kmInput.value = kmMin;
+        }
+      }
+
+      selectSaida.addEventListener('change', updateKmMin);
+      // se houver valor antigo, inicializar
+      if (selectSaida.value) {
+        updateKmMin();
+      }
+    });
+  </script>
 </x-app-layout>

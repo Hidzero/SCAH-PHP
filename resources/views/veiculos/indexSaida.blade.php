@@ -9,7 +9,7 @@
 
   <div class="py-10 container mx-auto px-4">
     <div class="bg-white rounded-lg shadow overflow-hidden">
-      <div class=" px-6 py-4 border-b">
+      <div class="px-6 py-4 border-b">
         <h3 class="text-lg font-medium text-gray-800">{{ __('Nova Saída') }}</h3>
       </div>
       <div class="p-6">
@@ -24,23 +24,10 @@
                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                 <option value="">{{ __('Selecione um veículo') }}</option>
                 @foreach($veiculos as $v)
-          <option value="{{ $v->id }}" @selected(old('veiculo_id') == $v->id)>
-            {{ $v->nome }} — {{ $v->placa }}
-          </option>
-        @endforeach
-              </select>
-            </div>
-
-            <div>
-              <label for="motorista" class="block text-sm font-medium text-gray-700">{{ __('Motorista') }}</label>
-              <select name="motorista_id" id="motorista" required
-                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-                <option value="">{{ __('Selecione um motorista') }}</option>
-                @foreach($motoristas as $m)
-          <option value="{{ $m->id }}" @selected(old('motorista_id') == $m->id)>
-            {{ $m->nome }}
-          </option>
-        @endforeach
+                  <option value="{{ $v->id }}" data-km="{{ $v->km_atual }}" @selected(old('veiculo_id') == $v->id)>
+                    {{ $v->nome }} — {{ $v->placa }}
+                  </option>
+                @endforeach
               </select>
             </div>
 
@@ -49,6 +36,19 @@
               <input type="number" name="km_atual" id="km_atual" required value="{{ old('km_atual') }}"
                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                 placeholder="Ex.: 12000">
+            </div>
+
+            <div>
+              <label for="motorista" class="block text-sm font-medium text-gray-700">{{ __('Motorista') }}</label>
+              <select name="motorista_id" id="motorista" required
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                <option value="">{{ __('Selecione um motorista') }}</option>
+                @foreach($motoristas as $m)
+                  <option value="{{ $m->id }}" @selected(old('motorista_id') == $m->id)>
+                    {{ $m->nome }}
+                  </option>
+                @endforeach
+              </select>
             </div>
 
             <div class="flex items-center mt-6">
@@ -96,6 +96,21 @@
           txt.required = false;
         }
       });
+
+      // Preenche KM ao selecionar veículo
+      const selectVeiculo = document.getElementById('veiculo');
+      const kmInput = document.getElementById('km_atual');
+
+      selectVeiculo.addEventListener('change', () => {
+        const option = selectVeiculo.options[selectVeiculo.selectedIndex];
+        const km = option.dataset.km || '';
+        kmInput.value = km;
+      });
+
+      // Se já veio com veiculo antigo, dispara change
+      if (selectVeiculo.value) {
+        selectVeiculo.dispatchEvent(new Event('change'));
+      }
     });
   </script>
 </x-app-layout>

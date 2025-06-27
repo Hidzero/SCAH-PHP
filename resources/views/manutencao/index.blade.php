@@ -1,4 +1,5 @@
 <x-app-layout>
+  @include('mensagem.mensagem')
   <x-slot name="header">
     <h1 class="text-2xl font-semibold text-gray-900">
       {{ __('Gestão de Manutenção') }}

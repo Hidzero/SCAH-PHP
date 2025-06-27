@@ -44,4 +44,10 @@
             </x-primary-button>
         </div>
     </form>
+    <div class="mt-4 text-sm text-center">
+        {{-- se o usuário nunca cadastrou senha, ele vai usar este link --}}
+        <a href="{{ route('password.request') }}" class="text-indigo-600 hover:text-indigo-900">
+            Primeiro acesso? Clique aqui para definir sua senha
+        </a>
+    </div>
 </x-guest-layout>

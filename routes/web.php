@@ -14,6 +14,8 @@ use App\Http\Controllers\RelatorioController;
 use App\Http\Controllers\FerramentaController;
 use App\Http\Controllers\ManutencaoController;
 use App\Http\Controllers\EquipamentoController;
+use App\Http\Middleware\RoleMiddleware;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -25,7 +27,7 @@ use App\Http\Controllers\EquipamentoController;
 |
 */
 
-Route::middleware(['auth', 'verified'])->group(function () {
+Route::middleware(['auth', 'verified', RoleMiddleware::class])->group(function () {
 
     // Como bloquear rotas a partir da role de usuario que esta sendo pesquisada na model
 
@@ -91,14 +93,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('dashboard', [VeiculoController::class, 'dashboard'])->name('dashboard');
     });
 
-    // Rota de Consulta
-    Route::get('consulta/gpt', [ConsultaController::class, 'gpt'])->name('consulta.gpt');
+    // // Rota de Consulta
+    // Route::get('consulta/gpt', [ConsultaController::class, 'gpt'])->name('consulta.gpt');
 
-    Route::middleware('auth')->group(function () {
-        Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-        Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-        Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    });
+    // Route::middleware('auth')->group(function () {
+    //     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    //     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    //     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    // });
 });
 
 require __DIR__ . '/auth.php';

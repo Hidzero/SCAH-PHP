@@ -1,7 +1,8 @@
 <x-app-layout>
+  @include('mensagem.mensagem')
   <x-slot name="header">
     <h2 class="text-2xl font-semibold text-gray-900">
-      {{ __('Gráficos Gerais') }}
+      {{ __('Dashboard') }}
     </h2>
   </x-slot>
 

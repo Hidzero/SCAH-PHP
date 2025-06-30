@@ -45,10 +45,6 @@ class UsuarioController extends Controller
                 'password' => Hash::make(Str::random(40)),
             ]);
 
-            Password::broker()->sendResetLink([
-                'email' => $user->email,
-            ]);
-
             // dispara o evento (se você precisar)
             event(new Registered($user));
 

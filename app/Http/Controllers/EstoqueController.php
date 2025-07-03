@@ -85,7 +85,7 @@ class EstoqueController extends Controller
 
     public function devolucao(Request $request)
     {
-        $retirada = Retirada::whereNull('deleted_at')->get();
+        $retirada = Retirada::whereNull('deleted_at')->paginate(10);
         return view('estoque.devolucao', compact('retirada'));
     }
 

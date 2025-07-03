@@ -49,6 +49,9 @@
       @endif
         </div>
       </div>
+      <div class="mt-4">
+        {{ $retirada->links() }}
+      </div>
     </div>
 
     <!-- Modal -->

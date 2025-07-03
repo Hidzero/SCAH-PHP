@@ -8,9 +8,9 @@ class ManutencaoController extends Controller
 {
     public function index()
     {
-        $aguardandoPeca = Manutencao::with('retirada.ferramenta')->where('status', 'aguardando peça')->get();
-        $emConserto = Manutencao::with('retirada.ferramenta')->where('status', 'em conserto')->get();
-        $condenada = Manutencao::with('retirada.ferramenta')->where('status', 'condenado')->get();
+        $aguardandoPeca = Manutencao::with('retirada.ferramenta')->where('status', 'aguardando peça')->paginate(10);
+        $emConserto = Manutencao::with('retirada.ferramenta')->where('status', 'em conserto')->paginate(10);
+        $condenada = Manutencao::with('retirada.ferramenta')->where('status', 'condenado')->paginate(10);
 
         return view('manutencao.index', compact(
             'aguardandoPeca',

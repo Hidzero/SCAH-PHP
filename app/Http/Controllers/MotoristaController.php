@@ -12,7 +12,7 @@ class MotoristaController extends Controller
      */
     public function index()
     {
-        $motoristas = Motorista::all();
+        $motoristas = Motorista::paginate(10);
         return view('motoristas.index', compact('motoristas'));
     }
 

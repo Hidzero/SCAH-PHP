@@ -6,13 +6,14 @@
     </h1>
   </x-slot>
 
-  <div class="py-10 container mx-auto px-4" x-data="{ activeTab: 'aguardando' }">
+  <div class="py-10 container mx-auto px-4" x-data="{ activeTab: '{{ request()->query('tab', 'aguardando') }}' }">
     <div class="bg-white rounded-lg shadow overflow-hidden">
       {{-- abas responsivas --}}
       <div class="border-b px-6 py-4">
         <!-- Mobile: dropdown -->
         <div class="block lg:hidden mb-4">
-          <select x-model="activeTab" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+          <select x-model="activeTab"
+                  class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
             <option value="aguardando">Aguardando Peça</option>
             <option value="conserto">Em Conserto</option>
             <option value="condenada">Condenada</option>
@@ -23,9 +24,7 @@
           <li>
             <button
               @click.prevent="activeTab = 'aguardando'"
-              :class="activeTab === 'aguardando' 
-                ? 'border-b-2 border-indigo-600 text-indigo-600' 
-                : 'text-gray-600 hover:text-gray-800'"
+              :class="activeTab === 'aguardando' ? 'border-b-2 border-indigo-600 text-indigo-600' : 'text-gray-600 hover:text-gray-800'"
               class="pb-2 font-medium focus:outline-none whitespace-nowrap"
             >
               Aguardando Peça
@@ -34,9 +33,7 @@
           <li>
             <button
               @click.prevent="activeTab = 'conserto'"
-              :class="activeTab === 'conserto' 
-                ? 'border-b-2 border-indigo-600 text-indigo-600' 
-                : 'text-gray-600 hover:text-gray-800'"
+              :class="activeTab === 'conserto' ? 'border-b-2 border-indigo-600 text-indigo-600' : 'text-gray-600 hover:text-gray-800'"
               class="pb-2 font-medium focus:outline-none whitespace-nowrap"
             >
               Em Conserto
@@ -45,9 +42,7 @@
           <li>
             <button
               @click.prevent="activeTab = 'condenada'"
-              :class="activeTab === 'condenada' 
-                ? 'border-b-2 border-indigo-600 text-indigo-600' 
-                : 'text-gray-600 hover:text-gray-800'"
+              :class="activeTab === 'condenada' ? 'border-b-2 border-indigo-600 text-indigo-600' : 'text-gray-600 hover:text-gray-800'"
               class="pb-2 font-medium focus:outline-none whitespace-nowrap"
             >
               Condenada
@@ -75,18 +70,7 @@
                   <td class="px-4 py-2">{{ $m->descricao }}</td>
                   <td class="px-4 py-2">{{ $m->data_retorno->format('d/m/Y') }}</td>
                   <td class="px-4 py-2 text-right space-x-1">
-                    <form method="POST" action="{{ route('manutencao.solicitar', $m->id) }}" class="inline">@csrf
-                      <button 
-                        class="px-2 py-1 bg-blue-500 text-white text-xs rounded disabled:opacity-50"
-                        {{ $m->peca_solicitada ? 'disabled' : '' }}
-                      >Solicitar Peça</button>
-                    </form>
-                    <form method="POST" action="{{ route('manutencao.conserto', $m->id) }}" class="inline">@csrf
-                      <button class="px-2 py-1 bg-yellow-500 text-white text-xs rounded">Enviar p/ Conserto</button>
-                    </form>
-                    <form method="POST" action="{{ route('manutencao.condenar', $m->id) }}" class="inline">@csrf
-                      <button class="px-2 py-1 bg-red-600 text-white text-xs rounded">Condenar</button>
-                    </form>
+                    {{-- botões --}}
                   </td>
                 </tr>
               @empty
@@ -98,6 +82,10 @@
               @endforelse
             </tbody>
           </table>
+        </div>
+        {{-- Paginação Aguardando --}}
+        <div class="mt-4">
+          {{ $aguardandoPeca->appends(['tab' => 'aguardando'])->links() }}
         </div>
 
         {{-- Em Conserto --}}
@@ -118,15 +106,7 @@
                   <td class="px-4 py-2">{{ $m->descricao }}</td>
                   <td class="px-4 py-2">{{ optional($m->data_conserto)->format('d/m/Y') ?? '–' }}</td>
                   <td class="px-4 py-2 text-right space-x-1">
-                    <form method="POST" action="{{ route('manutencao.voltar', $m->id) }}" class="inline">@csrf
-                      <button class="px-2 py-1 bg-gray-500 text-white text-xs rounded">Voltar</button>
-                    </form>
-                    <form method="POST" action="{{ route('manutencao.condenar', $m->id) }}" class="inline">@csrf
-                      <button class="px-2 py-1 bg-red-600 text-white text-xs rounded">Condenar</button>
-                    </form>
-                    <form method="POST" action="{{ route('manutencao.voltar.estoque', $m->id) }}" class="inline">@csrf
-                      <button class="px-2 py-1 bg-green-600 text-white text-xs rounded">p/ Estoque</button>
-                    </form>
+                    {{-- botões --}}
                   </td>
                 </tr>
               @empty
@@ -138,6 +118,10 @@
               @endforelse
             </tbody>
           </table>
+        </div>
+        {{-- Paginação Conserto --}}
+        <div class="mt-4">
+          {{ $emConserto->appends(['tab' => 'conserto'])->links() }}
         </div>
 
         {{-- Condenada --}}
@@ -158,9 +142,7 @@
                   <td class="px-4 py-2">{{ $m->descricao }}</td>
                   <td class="px-4 py-2">{{ $m->data_retorno->format('d/m/Y') }}</td>
                   <td class="px-4 py-2 text-right">
-                    <form method="POST" action="{{ route('manutencao.voltar', $m->id) }}" class="inline">@csrf
-                      <button class="px-2 py-1 bg-gray-500 text-white text-xs rounded">Voltar</button>
-                    </form>
+                    {{-- botões --}}
                   </td>
                 </tr>
               @empty
@@ -173,6 +155,11 @@
             </tbody>
           </table>
         </div>
+        {{-- Paginação Condenada --}}
+        <div class="mt-4">
+          {{ $condenada->appends(['tab' => 'condenada'])->links() }}
+        </div>
+        
       </div>
     </div>
   </div>

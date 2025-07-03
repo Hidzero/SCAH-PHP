@@ -161,6 +161,9 @@
                             </tbody>
                         </table>
                     </div>
+                    <div class="mt-4">  
+                        {{ $usuarios->links() }}
+                      </div>
                 @else
                     <p class="text-center text-gray-500">Nenhum usuário cadastrado.</p>
                 @endif

@@ -105,6 +105,9 @@
         </tbody>
         </table>
       </div>
+      <div class="mt-4">  
+        {{ $ferramentas->links() }}
+      </div>
     @else
       <p class="text-center text-gray-500">Nenhuma ferramenta cadastrada.</p>
     @endif

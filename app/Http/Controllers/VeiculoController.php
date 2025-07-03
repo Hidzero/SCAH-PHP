@@ -15,7 +15,7 @@ class VeiculoController extends Controller
     public function index()
     {
         // Obtém todos os veículos cadastrados
-        $veiculos = Veiculo::all();
+        $veiculos = Veiculo::paginate(10);
 
         // Retorna a view com os veículos
         return view('veiculos.index', compact('veiculos'));
@@ -107,7 +107,7 @@ class VeiculoController extends Controller
     public function dashboard()
     {
         // Obtém todos os veículos cadastrados
-        $veiculos = Veiculo::all();
+        $veiculos = Veiculo::paginate(10);
 
         // Retorna a view com os veículos
         return view('veiculos.dashboard', compact('veiculos'));

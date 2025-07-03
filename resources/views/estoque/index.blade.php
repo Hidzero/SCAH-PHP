@@ -68,6 +68,9 @@
         @endforelse
             </tbody>
           </table>
+          <div class="mt-4">
+            {{ $estoque->appends(['tab' => 'estoque'])->links() }}
+          </div>
         </div>
 
         <!-- Retiradas Tab -->
@@ -104,8 +107,10 @@
         @endforelse
             </tbody>
           </table>
+          <div class="mt-4">
+            {{ $retiradas->appends(['tab' => 'retiradas'])->links() }}
+          </div>
         </div>
-
 
         <!-- Manutenção Tab -->
         <div x-show="activeTab === 'manutencao'" class="overflow-x-auto">
@@ -133,6 +138,9 @@
         @endforelse
             </tbody>
           </table>
+          <div class="mt-4">
+            {{ $manutencoes->appends(['tab' => 'manutencao'])->links() }}
+          </div>
         </div>
 
         <!-- Reparadas Tab -->
@@ -159,6 +167,9 @@
         @endforelse
             </tbody>
           </table>
+          <div class="mt-4">
+            {{ $reparadas->appends(['tab' => 'reparadas'])->links() }}
+          </div>
         </div>
 
       </div>

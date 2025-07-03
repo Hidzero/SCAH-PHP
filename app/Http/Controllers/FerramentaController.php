@@ -9,10 +9,9 @@ class FerramentaController extends Controller
 {
     public function index()
     {
-        // Supondo que você tenha um modelo chamado Ferramenta
-        $ferramentas = Ferramenta::all();
+        // Pega 10 ferramentas por página
+        $ferramentas = Ferramenta::paginate(10);
 
-        // Retorna a view 'ferramentas.index' com a variável $ferramentas
         return view('ferramentas.index', compact('ferramentas'));
     }
 

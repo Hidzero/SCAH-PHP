@@ -79,24 +79,33 @@
                 <th class="px-4 py-2">Retirado por</th>
                 <th class="px-4 py-2">Usando em</th>
                 <th class="px-4 py-2">Data</th>
+                <th class="px-4 py-2">Devolução</th> <!-- nova coluna -->
               </tr>
             </thead>
             <tbody class="divide-y">
               @forelse($retiradas as $r)
-          <tr class="hover:bg-gray-50">
-          <td class="px-4 py-2">{{ $r->ferramenta->nome }}</td>
-          <td class="px-4 py-2">{{ $r->responsavel->name }}</td>
-          <td class="px-4 py-2">{{ $r->obra_id ? $r->obra->cliente : 'Uso Interno' }}</td>
-          <td class="px-4 py-2">{{ $r->created_at->format('d/m/Y H:i') }}</td>
-          </tr>
+            <tr class="hover:bg-gray-50">
+            <td class="px-4 py-2">{{ $r->ferramenta->nome }}</td>
+            <td class="px-4 py-2">{{ $r->responsavel->name }}</td>
+            <td class="px-4 py-2">{{ $r->obra_id ? $r->obra->cliente : 'Uso Interno' }}</td>
+            <td class="px-4 py-2">{{ $r->created_at->format('d/m/Y H:i') }}</td>
+            <td class="px-4 py-2">
+              @if($r->deleted_at)
+          {{ $r->deleted_at->format('d/m/Y H:i') }}
+          @else
+          — {{-- ou você pode colocar 'Pendente' --}}
+          @endif
+            </td>
+            </tr>
         @empty
           <tr>
-          <td colspan="4" class="px-4 py-2 text-center">Nenhuma retirada registrada.</td>
+          <td colspan="5" class="px-4 py-2 text-center">Nenhuma retirada registrada.</td>
           </tr>
         @endforelse
             </tbody>
           </table>
         </div>
+
 
         <!-- Manutenção Tab -->
         <div x-show="activeTab === 'manutencao'" class="overflow-x-auto">

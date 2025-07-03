@@ -14,17 +14,23 @@ class EstoqueController extends Controller
     public function visualizar()
     {
         $estoque = Ferramenta::all();
-        $retiradas = Retirada::whereNull('deleted_at')->get();
-        // Manutenções que aparecem na aba “Manutenção”:
+    
+        // traz tudo, ordena: não devolvidos (deleted_at NULL) vêm primeiro por created_at asc,
+        // depois devolvidos (deleted_at NOT NULL) por deleted_at desc
+        $retiradas = Retirada::withTrashed()
+            ->orderByRaw('(deleted_at IS NULL) DESC')
+            ->orderByRaw('CASE WHEN deleted_at IS NULL THEN created_at END ASC')
+            ->orderByRaw('CASE WHEN deleted_at IS NOT NULL THEN deleted_at END DESC')
+            ->get();
+    
         $manutencoes = Manutencao::with('retirada.ferramenta')
             ->whereIn('status', ['aguardando peça', 'em conserto', 'condenado'])
             ->get();
-
-        // Manutenções que aparecem na aba “Reparadas”:
+    
         $reparadas = Manutencao::with('retirada.ferramenta')
             ->where('status', 'voltar para estoque')
             ->get();
-
+    
         return view('estoque.index', compact(
             'estoque',
             'retiradas',

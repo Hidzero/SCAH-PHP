@@ -13,7 +13,7 @@ class EstoqueController extends Controller
 {
     public function visualizar()
     {
-        $estoque = Ferramenta::all();
+        $estoque = Ferramenta::paginate(10);
     
         // traz tudo, ordena: não devolvidos (deleted_at NULL) vêm primeiro por created_at asc,
         // depois devolvidos (deleted_at NOT NULL) por deleted_at desc
@@ -21,15 +21,15 @@ class EstoqueController extends Controller
             ->orderByRaw('(deleted_at IS NULL) DESC')
             ->orderByRaw('CASE WHEN deleted_at IS NULL THEN created_at END ASC')
             ->orderByRaw('CASE WHEN deleted_at IS NOT NULL THEN deleted_at END DESC')
-            ->get();
+            ->paginate(10);
     
         $manutencoes = Manutencao::with('retirada.ferramenta')
             ->whereIn('status', ['aguardando peça', 'em conserto', 'condenado'])
-            ->get();
+            ->paginate(10);
     
         $reparadas = Manutencao::with('retirada.ferramenta')
             ->where('status', 'voltar para estoque')
-            ->get();
+            ->paginate(10);
     
         return view('estoque.index', compact(
             'estoque',

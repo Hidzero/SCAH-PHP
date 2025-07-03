@@ -1,3 +1,4 @@
+{{-- resources/views/saidas/create.blade.php or retirada.blade.php? Confirm file name --}}
 <x-app-layout>
   @include('mensagem.mensagem')
   <x-slot name="header">
@@ -19,8 +20,8 @@
               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
               <option value="" disabled selected>Selecione...</option>
               @foreach($ferramentas as $f)
-          <option value="{{ $f->id }}">{{ $f->nome }}</option>
-        @endforeach
+                <option value="{{ $f->id }}">{{ $f->nome }}</option>
+              @endforeach
             </select>
           </div>
           <!-- Responsável -->
@@ -30,8 +31,8 @@
               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
               <option value="" disabled selected>Selecione...</option>
               @foreach($responsaveis as $r)
-          <option value="{{ $r->id }}">{{ $r->name }}</option>
-        @endforeach
+                <option value="{{ $r->id }}">{{ $r->name }}</option>
+              @endforeach
             </select>
           </div>
           <!-- Previsão Retorno -->
@@ -44,7 +45,7 @@
 
         <div class="flex items-center space-x-4">
           <div class="flex items-center">
-            <input id="uso_interno" name="uso_interno" type="checkbox"
+            <input id="uso_interno" name="uso_interno" type="checkbox" value="1" checked
               class="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500" />
             <label for="uso_interno" class="ml-2 block text-sm text-gray-700">Uso Interno</label>
           </div>
@@ -54,15 +55,15 @@
               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 cursor-not-allowed focus:ring-indigo-500 focus:border-indigo-500">
               <option value="" selected>Selecione...</option>
               @foreach($obras as $obra)
-          <option value="{{ $obra->id }}">{{ $obra->cliente }} - {{ $obra->endereco }}</option>
-        @endforeach
+                <option value="{{ $obra->id }}">{{ $obra->cliente }} - {{ $obra->endereco }}</option>
+              @endforeach
             </select>
           </div>
         </div>
 
         <div class="text-right">
           <button type="submit"
-            class="inline-flex items-center px-6 py-2 bg-indigo-600 text-white font-medium rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+            class="inline-flex items-center px-6 py-2 bg-indigo-600 text-white font-medium rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition">
             Registrar
           </button>
         </div>
@@ -74,7 +75,8 @@
     document.addEventListener('DOMContentLoaded', () => {
       const checkbox = document.getElementById('uso_interno');
       const obraSelect = document.getElementById('obra');
-      checkbox.addEventListener('change', () => {
+
+      function toggleObra() {
         if (checkbox.checked) {
           obraSelect.disabled = true;
           obraSelect.classList.add('bg-gray-100', 'cursor-not-allowed');
@@ -82,7 +84,11 @@
           obraSelect.disabled = false;
           obraSelect.classList.remove('bg-gray-100', 'cursor-not-allowed');
         }
-      });
+      }
+
+      // listener e estado inicial
+      checkbox.addEventListener('change', toggleObra);
+      toggleObra();
     });
   </script>
 </x-app-layout>

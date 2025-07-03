@@ -46,6 +46,10 @@
         </tbody>
       </table>
       </div>
+      <!-- Paginação -->
+      <div class="mt-4">
+      {{ $veiculos->links() }}
+      </div>
     @else
       <p class="text-center text-gray-500">Nenhum veículo cadastrado.</p>
     @endif

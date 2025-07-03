@@ -50,29 +50,38 @@ class EstoqueController extends Controller
 
     public function store(Request $request)
     {
-        // dd($request);
         try {
-            // Criar registro de retirada
-            Retirada::create([
-                'ferramenta_id' => $request->ferramenta_id,
-                'responsavel_id' => $request->responsavel,
-                'previsao_retorno' => $request->previsao_retorno,
-                'uso_interno' => $request->has('uso_interno') ? 1 : 0,
-                'obra_id' => $request->obra_id,
-                'created_at' => now(),
+            $data = $request->validate([
+                'ferramenta_id'    => 'required|exists:ferramentas,id',
+                'responsavel'      => 'required|exists:users,id',
+                'previsao_retorno' => 'required|date',
+                'uso_interno'      => 'required_without:obra_id|boolean',
+                'obra_id'          => 'required_without:uso_interno|nullable|exists:obras,id',
             ]);
-
-            Ferramenta::where('id', $request->ferramenta_id)
-                ->update(['em_uso' => true]);
-
-
-            return redirect()->route('estoque.visualizar')
-                ->with('success', 'Retirada registrada com sucesso!');
+    
+            // Cria a retirada
+            Retirada::create([
+                'ferramenta_id'    => $data['ferramenta_id'],
+                'responsavel_id'   => $data['responsavel'],
+                'previsao_retorno' => $data['previsao_retorno'],
+                'obra_id'          => $data['uso_interno'] ? null : $data['obra_id'],
+                'uso_interno'      => (bool) ($data['uso_interno'] ?? false),
+            ]);
+    
+            // Marca a ferramenta como em uso
+            Ferramenta::find($data['ferramenta_id'])->update(['em_uso' => true]);
+    
+            return back()
+                ->with('success', 'Retirada registrada com sucesso.');
         } catch (\Exception $e) {
-            return redirect()->route('estoque.visualizar')
-                ->with('error', 'Erro ao registrar a retirada. Tente novamente.');
+            \Log::error('Erro ao registrar retirada: '.$e->getMessage());
+    
+            return back()
+                ->withInput()
+                ->with('error', 'Não foi possível registrar a retirada. Por favor, tente novamente.');
         }
     }
+      
 
     public function devolucao(Request $request)
     {

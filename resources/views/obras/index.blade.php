@@ -120,6 +120,9 @@
         </tbody>
         </table>
       </div>
+      <div class="mt-4">  
+        {{ $obras->links() }}
+      </div>
     @else
       <p class="text-center text-gray-500">Nenhuma obra cadastrada.</p>
     @endif

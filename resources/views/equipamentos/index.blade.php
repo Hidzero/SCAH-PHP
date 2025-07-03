@@ -93,6 +93,9 @@
         </tbody>
         </table>
       </div>
+      <div class="mt-4">  
+        {{ $equipamentos->links() }}
+      </div>
     @else
       <p class="text-center text-gray-500">Nenhum equipamento cadastrado.</p>
     @endif

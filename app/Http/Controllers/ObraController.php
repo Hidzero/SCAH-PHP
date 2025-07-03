@@ -10,7 +10,7 @@ class ObraController extends Controller
     public function index()
     {
         // Recupera todas as obras do banco de dados
-        $obras = Obra::all();
+        $obras = Obra::paginate(10);
 
         // Retorna a view 'obras.index' com os dados
         return view('obras.index', compact('obras'));

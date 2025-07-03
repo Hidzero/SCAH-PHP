@@ -157,6 +157,9 @@
         </tbody>
         </table>
       </div>
+      <div class="mt-4">  
+        {{ $motoristas->links() }}
+      </div>
     @else
       <p class="text-center text-gray-500">Nenhum motorista cadastrado.</p>
     @endif

@@ -20,10 +20,10 @@ class UsuarioController extends Controller
 
         if ($currentRole === 'admin') {
             // Admins see only estoque, manutencao e veiculos
-            $usuarios = User::whereIn('role', ['estoque', 'manutencao', 'veiculos'])->get();
+            $usuarios = User::whereIn('role', ['estoque', 'manutencao', 'veiculos'])->paginate(10);
         } else {
             // Master and others see todos
-            $usuarios = User::all();
+            $usuarios = User::paginate(10);
         }
 
         return view('usuario.index', compact('usuarios'));
